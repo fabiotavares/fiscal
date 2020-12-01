@@ -68,34 +68,34 @@ mixin _$PesoController on _PesoControllerBase, Store {
     });
   }
 
-  final _$groupNotaFiscalAtom =
-      Atom(name: '_PesoControllerBase.groupNotaFiscal');
+  final _$opcaoNotaFiscalAtom =
+      Atom(name: '_PesoControllerBase.opcaoNotaFiscal');
 
   @override
-  int get groupNotaFiscal {
-    _$groupNotaFiscalAtom.reportRead();
-    return super.groupNotaFiscal;
+  int get opcaoNotaFiscal {
+    _$opcaoNotaFiscalAtom.reportRead();
+    return super.opcaoNotaFiscal;
   }
 
   @override
-  set groupNotaFiscal(int value) {
-    _$groupNotaFiscalAtom.reportWrite(value, super.groupNotaFiscal, () {
-      super.groupNotaFiscal = value;
+  set opcaoNotaFiscal(int value) {
+    _$opcaoNotaFiscalAtom.reportWrite(value, super.opcaoNotaFiscal, () {
+      super.opcaoNotaFiscal = value;
     });
   }
 
-  final _$groupBalancaAtom = Atom(name: '_PesoControllerBase.groupBalanca');
+  final _$opcaoBalancaAtom = Atom(name: '_PesoControllerBase.opcaoBalanca');
 
   @override
-  int get groupBalanca {
-    _$groupBalancaAtom.reportRead();
-    return super.groupBalanca;
+  int get opcaoBalanca {
+    _$opcaoBalancaAtom.reportRead();
+    return super.opcaoBalanca;
   }
 
   @override
-  set groupBalanca(int value) {
-    _$groupBalancaAtom.reportWrite(value, super.groupBalanca, () {
-      super.groupBalanca = value;
+  set opcaoBalanca(int value) {
+    _$opcaoBalancaAtom.reportWrite(value, super.opcaoBalanca, () {
+      super.opcaoBalanca = value;
     });
   }
 
@@ -188,13 +188,24 @@ mixin _$PesoController on _PesoControllerBase, Store {
   }
 
   @override
+  void changeSelectedPage(int index) {
+    final _$actionInfo = _$_PesoControllerBaseActionController.startAction(
+        name: '_PesoControllerBase.changeSelectedPage');
+    try {
+      return super.changeSelectedPage(index);
+    } finally {
+      _$_PesoControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 veiculoModel: ${veiculoModel},
 valuePesoPorComprimento: ${valuePesoPorComprimento},
 groupPesoPorComprimento: ${groupPesoPorComprimento},
-groupNotaFiscal: ${groupNotaFiscal},
-groupBalanca: ${groupBalanca},
+opcaoNotaFiscal: ${opcaoNotaFiscal},
+opcaoBalanca: ${opcaoBalanca},
 pageController: ${pageController},
 selectedTab: ${selectedTab}
     ''';

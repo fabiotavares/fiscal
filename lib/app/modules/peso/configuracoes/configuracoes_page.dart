@@ -1,5 +1,4 @@
 import 'package:fiscal/app/components/configuracao_peso_item.dart';
-import 'package:fiscal/app/components/theme_utils.dart';
 import 'package:fiscal/app/model/veiculo_peso_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -62,7 +61,6 @@ class _ConfiguracoesPageState extends ModularState<ConfiguracoesPage, Configurac
                     children: [
                       Observer(builder: (_) {
                         return Container(
-                          // color: ThemeUtils.accentColor,
                           width: ScreenUtil().screenWidth * .8,
                           height: 60,
                           child: Center(

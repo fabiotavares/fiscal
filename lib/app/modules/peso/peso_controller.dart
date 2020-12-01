@@ -1,4 +1,5 @@
 import 'package:fiscal/app/model/veiculo_peso_model.dart';
+import 'package:fiscal/app/components/text_field_soma/text_field_soma_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -9,9 +10,6 @@ part 'peso_controller.g.dart';
 class PesoController = _PesoControllerBase with _$PesoController;
 
 abstract class _PesoControllerBase with Store {
-  GlobalKey<FormState> veiculoFormKey = GlobalKey();
-  GlobalKey<FormState> notaFiscalFormKey = GlobalKey();
-  GlobalKey<FormState> balancaFormKey = GlobalKey();
   TextEditingController limiteTecnicoController = TextEditingController();
   TextEditingController taraController = TextEditingController();
   TextEditingController cmtController = TextEditingController();
@@ -20,21 +18,28 @@ abstract class _PesoControllerBase with Store {
   TextEditingController cnpjRemetenteController = TextEditingController();
   TextEditingController inmetroController = TextEditingController();
   TextEditingController validadeAfericaoController = TextEditingController();
+  TextEditingController pesoDeclaradoController = TextEditingController();
+  TextEditingController pesoAferidoController = TextEditingController();
+
+  // atributos necessários para os componentes de somatório
+  TextFieldSomaController limiteTecnico = TextFieldSomaController();
+  TextFieldSomaController tara = TextFieldSomaController();
+  TextFieldSomaController pesoDeclarado = TextFieldSomaController();
 
   @observable
   VeiculoPesoModel veiculoModel;
 
   @observable
-  double valuePesoPorComprimento;
+  double valuePesoPorComprimento = 0.0;
 
   @observable
   int groupPesoPorComprimento = 0;
 
   @observable
-  int groupNotaFiscal = 0;
+  int opcaoNotaFiscal = 0;
 
   @observable
-  int groupBalanca = 0;
+  int opcaoBalanca = 0;
 
   @observable
   PageController pageController = PageController(initialPage: 0);
@@ -57,17 +62,22 @@ abstract class _PesoControllerBase with Store {
 
   @action
   void changeNotaFiscal(int value) {
-    groupNotaFiscal = value;
+    opcaoNotaFiscal = value;
   }
 
   @action
   void changeBalanca(int value) {
-    groupBalanca = value;
+    opcaoBalanca = value;
   }
 
   @action
   void changeSelectedTab(int index) {
     selectedTab = index;
     pageController.animateToPage(index, duration: Duration(milliseconds: 200), curve: Curves.ease);
+  }
+
+  @action
+  void changeSelectedPage(int index) {
+    selectedTab = index;
   }
 }

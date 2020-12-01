@@ -1,4 +1,5 @@
 import 'package:fiscal/app/components/get_double_number_dialog.dart';
+import 'package:fiscal/app/components/theme_utils.dart';
 import 'package:flutter/material.dart';
 
 // componente que exibe um TextFormField com opções de somar ou subtrair um número
@@ -19,8 +20,15 @@ class TextFormFieldSoma extends StatefulWidget {
 
 class _TextFormFieldSomaState extends State<TextFormFieldSoma> {
   final TextEditingController _valueController = new TextEditingController();
-  List<double> _valoresSoma = [];
-  String _contaMontada = '';
+  List<double> _valoresSoma;
+  String _contaMontada;
+
+  @override
+  void initState() {
+    super.initState();
+    _valoresSoma = [];
+    _contaMontada = '';
+  }
 
   void add(double value) {
     _valoresSoma.add(value);
@@ -64,10 +72,9 @@ class _TextFormFieldSomaState extends State<TextFormFieldSoma> {
         TextFormField(
           readOnly: true,
           controller: widget.controller,
-          // style: TextStyle(fontSize: 20),
           decoration: InputDecoration(
             labelText: widget.label,
-            labelStyle: TextStyle(fontSize: 15),
+            labelStyle: TextStyle(fontSize: 14),
             suffixIcon: Container(
               width: 100,
               child: Row(
@@ -76,7 +83,7 @@ class _TextFormFieldSomaState extends State<TextFormFieldSoma> {
                   IconButton(
                     icon: Icon(
                       Icons.remove_circle,
-                      color: Colors.red,
+                      color: ThemeUtils.theme.errorColor,
                     ),
                     onPressed: () {
                       remove();
@@ -85,7 +92,7 @@ class _TextFormFieldSomaState extends State<TextFormFieldSoma> {
                   IconButton(
                     icon: Icon(
                       Icons.add_circle,
-                      color: Colors.green,
+                      color: ThemeUtils.accentColor,
                     ),
                     onPressed: () {
                       GetDoubleNumberDialog.show(context: context, valueController: _valueController).then((value) {

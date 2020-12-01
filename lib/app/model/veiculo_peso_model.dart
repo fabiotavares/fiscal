@@ -22,4 +22,11 @@ class VeiculoPesoModel {
     this.precisaAet,
     this.obs,
   });
+
+  String get pbtc {
+    if (tipo == 'Caminhão') {
+      return 'PBT';
+    }
+    return 'PBTC';
+  }
 }

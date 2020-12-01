@@ -1,5 +1,5 @@
 name: fiscal
-description: A new Flutter project.
+description: Um projeto pessoal.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -37,7 +37,7 @@ dependencies:
   flutter_mobx: ^1.1.0+2
   mobx: ^1.2.1+4
   flutter_modular: ^2.0.1
-  get: ^3.15.0
+  get: ^3.21.2
   flutter_screenutil: ^3.2.0
   flutter_icons: ^1.1.0
   ff_navigation_bar: ^0.1.5

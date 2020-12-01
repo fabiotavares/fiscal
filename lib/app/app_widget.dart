@@ -7,7 +7,7 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: Modular.navigatorKey,
+      navigatorKey: Get.addKey(Modular.navigatorKey),
       title: 'Fiscal de Trânsito',
       debugShowCheckedModeBanner: false,
       theme: ThemeFiscal.theme(),
