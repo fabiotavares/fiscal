@@ -6,9 +6,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 class TextFieldSomaWidget extends StatelessWidget {
   // classe para persistir algumas informações na tela
-  final TextFieldSomaController controller;
+  final TextFieldSomaController textFieldSomaController;
   // controle do total exibido e repassado para quem chamou
-  final TextEditingController textFieldController;
+  final TextEditingController textEditingController;
   // controle apenas local para se obter um novo valor a ser somado
   final TextEditingController _newValue = TextEditingController();
   // rótulo a ser exibido
@@ -16,8 +16,8 @@ class TextFieldSomaWidget extends StatelessWidget {
 
   TextFieldSomaWidget({
     Key key,
-    @required this.controller,
-    @required this.textFieldController,
+    @required this.textFieldSomaController,
+    @required this.textEditingController,
     @required this.label,
   }) : super(key: key);
 
@@ -28,7 +28,7 @@ class TextFieldSomaWidget extends StatelessWidget {
       children: [
         TextFormField(
           readOnly: true,
-          controller: textFieldController,
+          controller: textEditingController,
           decoration: InputDecoration(
             labelText: label,
             labelStyle: TextStyle(fontSize: 14),
@@ -43,7 +43,7 @@ class TextFieldSomaWidget extends StatelessWidget {
                       color: ThemeUtils.theme.errorColor,
                     ),
                     onPressed: () {
-                      controller.remove(textFieldController);
+                      textFieldSomaController.remove(textEditingController);
                     },
                   ),
                   IconButton(
@@ -55,7 +55,7 @@ class TextFieldSomaWidget extends StatelessWidget {
                       GetDoubleNumberDialog.show(context: context, valueController: _newValue).then((value) {
                         if (_newValue.text.isNotEmpty) {
                           try {
-                            controller.add(textFieldController, double.parse(_newValue.text));
+                            textFieldSomaController.add(textEditingController, double.parse(_newValue.text));
                           } catch (e) {
                             // TODO
                           }
@@ -72,7 +72,7 @@ class TextFieldSomaWidget extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 4.0),
             child: Text(
-              controller.contaMontada,
+              textFieldSomaController.contaMontada,
               style: TextStyle(color: Colors.grey),
             ),
           );

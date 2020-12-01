@@ -1,3 +1,4 @@
+import 'package:fiscal/app/components/home_appbar.dart';
 import 'package:fiscal/app/components/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -22,9 +23,12 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
     ThemeUtils.init(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      drawer: Drawer(),
+      backgroundColor: Colors.grey[300],
+      appBar: HomeAppBar(null),
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: ListView(

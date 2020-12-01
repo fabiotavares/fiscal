@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 class TextFormFieldSoma extends StatefulWidget {
   final TextEditingController controller;
   final String label;
+  List<double> valores;
 
-  const TextFormFieldSoma({
+  TextFormFieldSoma({
     Key key,
     @required this.controller,
     @required this.label,
+    @required this.valores,
   }) : super(key: key);
 
   @override
@@ -20,31 +22,24 @@ class TextFormFieldSoma extends StatefulWidget {
 
 class _TextFormFieldSomaState extends State<TextFormFieldSoma> {
   final TextEditingController _valueController = new TextEditingController();
-  List<double> _valoresSoma;
-  String _contaMontada;
-
-  @override
-  void initState() {
-    super.initState();
-    _valoresSoma = [];
-    _contaMontada = '';
-  }
+  // List<double> _valoresSoma;
+  String _contaMontada = '';
 
   void add(double value) {
-    _valoresSoma.add(value);
+    widget.valores.add(value);
     atualizaTotalSoma();
   }
 
   void remove() {
-    if (_valoresSoma.isNotEmpty) {
-      _valoresSoma.removeLast();
+    if (widget.valores.isNotEmpty) {
+      widget.valores.removeLast();
       atualizaTotalSoma();
     }
   }
 
   void atualizaTotalSoma() {
     String aux = '';
-    double total = _valoresSoma.fold(0, (previousValue, element) {
+    double total = widget.valores.fold(0, (previousValue, element) {
       if (aux.isNotEmpty) {
         aux += ' + ';
       }

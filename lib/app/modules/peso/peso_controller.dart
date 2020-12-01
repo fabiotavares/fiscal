@@ -22,9 +22,9 @@ abstract class _PesoControllerBase with Store {
   TextEditingController pesoAferidoController = TextEditingController();
 
   // atributos necessários para os componentes de somatório
-  TextFieldSomaController limiteTecnico = TextFieldSomaController();
-  TextFieldSomaController tara = TextFieldSomaController();
-  TextFieldSomaController pesoDeclarado = TextFieldSomaController();
+  TextFieldSomaController limiteTecnicoSomaController = TextFieldSomaController();
+  TextFieldSomaController taraSomaController = TextFieldSomaController();
+  TextFieldSomaController pesoDeclaradoSomaController = TextFieldSomaController();
 
   @observable
   VeiculoPesoModel veiculoModel;

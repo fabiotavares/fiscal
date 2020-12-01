@@ -1,8 +1,8 @@
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 import 'package:fiscal/app/components/configuracao_peso_item.dart';
+import 'package:fiscal/app/components/home_appbar.dart';
 import 'package:fiscal/app/components/sim_ou_nao_dialog.dart';
 import 'package:fiscal/app/components/text_field_soma/text_field_soma_widget.dart';
-import 'package:fiscal/app/components/text_field_soma/text_field_soma_controller.dart';
 import 'package:fiscal/app/components/theme_utils.dart';
 import 'package:fiscal/app/model/veiculo_peso_model.dart';
 import 'package:fiscal/app/model/fiscalizacao_peso_model.dart';
@@ -40,20 +40,36 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
       child: Observer(
         builder: (context) => Scaffold(
           backgroundColor: Colors.grey[300],
-          appBar: AppBar(
-            title: Text(widget.title),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.check),
-                onPressed: () {
-                  final dados = validaDados();
-                  if (dados != null) {
-                    Modular.to.pushNamed('/peso/infracoes_peso', arguments: dados);
-                  }
-                },
-              )
-            ],
-          ),
+          appBar: HomeAppBar(controller),
+          // AppBar(
+          //   backgroundColor: Colors.grey[300],
+          //   elevation: 0,
+          //   title: Text(
+          //     widget.title,
+          //     style: TextStyle(color: ThemeUtils.primaryColor),
+          //   ),
+          //   actions: [
+          //     Container(
+          //       margin: EdgeInsets.all(10),
+          //       decoration: BoxDecoration(
+          //         color: ThemeUtils.accentColor,
+          //       ),
+          //       child: IconButton(
+          //         padding: EdgeInsets.all(10.0),
+          //         icon: Icon(
+          //           Icons.check,
+          //           size: 40,
+          //         ),
+          //         onPressed: () {
+          //           final dados = validaDados();
+          //           if (dados != null) {
+          //             Modular.to.pushNamed('/peso/infracoes_peso', arguments: dados);
+          //           }
+          //         },
+          //       ),
+          //     )
+          //   ],
+          // ),
           body: Observer(builder: (_) {
             return PageView(
               controller: controller.pageController,
@@ -151,10 +167,9 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
-                  // child: TextFormFieldSoma(controller: controller.limiteTecnicoController, label: 'Limite técnico (kg)'),
                   child: TextFieldSomaWidget(
-                    controller: controller.limiteTecnico,
-                    textFieldController: controller.limiteTecnicoController,
+                    textFieldSomaController: controller.limiteTecnicoSomaController,
+                    textEditingController: controller.limiteTecnicoController,
                     label: 'Limite técnico (kg)',
                   ),
                 ),
@@ -166,10 +181,9 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
-                  // child: TextFormFieldSoma(controller: controller.taraController, label: 'Tara (kg)'),
                   child: TextFieldSomaWidget(
-                    controller: controller.tara,
-                    textFieldController: controller.taraController,
+                    textFieldSomaController: controller.taraSomaController,
+                    textEditingController: controller.taraController,
                     label: 'Tara (kg)',
                   ),
                 ),
@@ -184,7 +198,7 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
                   child: TextFormField(
                     controller: controller.cmtController,
                     decoration: const InputDecoration(
-                      labelText: 'Capacidade máxima de tração (kg)',
+                      labelText: 'CMT (kg)',
                       labelStyle: TextStyle(fontSize: 14),
                     ),
                     keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -317,11 +331,11 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
-                    // child: TextFormFieldSoma(controller: controller.pesoDeclaradoController, label: 'Peso declarado (kg)'),
                     child: TextFieldSomaWidget(
-                        controller: controller.pesoDeclarado,
-                        textFieldController: controller.pesoDeclaradoController,
-                        label: 'Peso declarado (kg)'),
+                      textFieldSomaController: controller.pesoDeclaradoSomaController,
+                      textEditingController: controller.pesoDeclaradoController,
+                      label: 'Peso declarado (kg)',
+                    ),
                   ),
                 ),
               ),
