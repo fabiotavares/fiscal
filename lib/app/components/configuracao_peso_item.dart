@@ -24,14 +24,25 @@ class ConfiguracaoPesoItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // SizedBox(height: 5),
           Container(
-            padding: EdgeInsets.all(6),
-            margin: EdgeInsets.symmetric(vertical: 4.0),
+            width: 60,
+            padding: EdgeInsets.all(3),
+            margin: EdgeInsets.only(top: 8.0, bottom: 2.0),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(15),
               color: ThemeUtils.accentColor,
             ),
-            child: Text(veiculoModel.id, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            child: Center(
+              child: Text(
+                veiculoModel.id,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  // color: Colors.white,
+                ),
+              ),
+            ),
           ),
           SizedBox(height: 5),
           Text(
@@ -42,8 +53,8 @@ class ConfiguracaoPesoItem extends StatelessWidget {
             thickness: 1,
             height: 20,
           ),
-          Image.asset('assets/images/${veiculoModel.id}a.png'),
-          Image.asset('assets/images/${veiculoModel.id}b.png'),
+          Image.asset('assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}a.png'),
+          Image.asset('assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}b.png'),
           SizedBox(height: 5),
           Text(
             'Comprimento máximo: ${veiculoModel.comprimentoMaximo}',

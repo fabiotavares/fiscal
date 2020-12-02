@@ -1,4 +1,3 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fiscal/app/model/fiscalizacao_peso_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -21,31 +20,18 @@ class _InfracoesPesoPageState extends ModularState<InfracoesPesoPage, InfracoesP
 
   @override
   Widget build(BuildContext context) {
+    final infracoes = fiscalizacao.getInfracoes();
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('${widget.title}'),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(12.0),
-        child: Container(
-          width: ScreenUtil().screenWidth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Card(
-                elevation: 1,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: fiscalizacao.getInfracoes().map((e) => Text(e.toString())).toList(),
-                  ),
-                ),
-              ),
-            ],
-          ),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        child: ListView.builder(
+          itemCount: infracoes.length,
+          itemBuilder: (context, index) => infracoes[index].getInfracaoWidget(),
         ),
       ),
     );

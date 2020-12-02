@@ -24,7 +24,9 @@ abstract class _PesoControllerBase with Store {
   // atributos necessários para os componentes de somatório
   TextFieldSomaController limiteTecnicoSomaController = TextFieldSomaController();
   TextFieldSomaController taraSomaController = TextFieldSomaController();
+  TextFieldSomaController cmtSomaController = TextFieldSomaController();
   TextFieldSomaController pesoDeclaradoSomaController = TextFieldSomaController();
+  TextFieldSomaController pesoAferidoSomaController = TextFieldSomaController();
 
   @observable
   VeiculoPesoModel veiculoModel;

@@ -1,7 +1,6 @@
 import 'package:fiscal/app/model/infracao_excesso_peso_model.dart';
 import 'package:fiscal/app/model/infracao_excesso_cmt_model.dart';
 import 'package:fiscal/app/model/infracao_model.dart';
-import 'dart:math';
 
 enum OpcaoNotaFiscal {
   nao_possui,
@@ -10,6 +9,7 @@ enum OpcaoNotaFiscal {
 }
 
 class FiscalizacaoPesoModel {
+  final String classificacao;
   final double pbtcLegal;
   final double pbtcTecnico;
   final double tara;
@@ -20,12 +20,13 @@ class FiscalizacaoPesoModel {
   final String cnpj;
   final double pesoDeclarado;
   final double pesoAferido;
-  final String inmetro;
-  final String validadeAfericao;
+  final String afericaoInmetro;
+  final String afericaoValidade;
   final String pbtcLabel;
   final toleranciaBalanca = 0.05;
 
   FiscalizacaoPesoModel({
+    this.classificacao,
     this.pbtcLegal,
     this.pbtcTecnico,
     this.tara,
@@ -36,8 +37,8 @@ class FiscalizacaoPesoModel {
     this.cnpj,
     this.pesoDeclarado,
     this.pesoAferido,
-    this.inmetro,
-    this.validadeAfericao,
+    this.afericaoInmetro,
+    this.afericaoValidade,
     this.pbtcLabel,
   });
 
@@ -54,19 +55,33 @@ class FiscalizacaoPesoModel {
     cnpj: $cnpj
     pesoDeclarado: $pesoDeclarado
     pesoAferido: $pesoAferido
-    inmetro: $inmetro
-    validadeAfericao: $validadeAfericao
+    inmetro: $afericaoInmetro
+    validadeAfericao: $afericaoValidade
     ''';
   }
 
   List<InfracaoModel> getInfracoes() {
-    var excessoPeso = InfracaoExcessoPesoModel();
-    // considere o label correto para o tipo de veículo
-    excessoPeso.pbtcLabel = pbtcLabel;
+    // cria a infração de excesso de peso...
+    var excessoPeso = InfracaoExcessoPesoModel(
+      classificacao: classificacao,
+      carga: tipoCarga ?? '',
+      afericaoInmetro: afericaoInmetro ?? '',
+      afericaoValidade: afericaoValidade ?? '',
+      pbtcLabel: pbtcLabel,
+      tara: tara,
+      pesoDeclarado: pesoDeclarado,
+    );
+
+    // placas dos tracionados
+    excessoPeso.placasTracionados = placas ?? '';
+
     // pbtc considerado deve ser o menor entre os valores legal e técnico
-    excessoPeso.pbtcPermitido = pbtcLegal;
-    if (pbtcTecnico > 0.0) {
-      excessoPeso.pbtcPermitido = min(pbtcTecnico, pbtcLegal);
+    if (pbtcTecnico > 0.0 && pbtcTecnico < pbtcLegal) {
+      excessoPeso.pbtcPermitido = pbtcTecnico;
+      // atualiza o amparo legal...
+      excessoPeso.amparoLegal += ', Art. 100 CTB';
+    } else {
+      excessoPeso.pbtcPermitido = pbtcLegal;
     }
 
     if (pesoAferido > 0.0) {
@@ -74,45 +89,58 @@ class FiscalizacaoPesoModel {
       excessoPeso.tipo = TipoFiscalizacaoPeso.balanca;
       excessoPeso.pbtcConstatado = pesoAferido;
       // aplicar a tolerância prevista para balança (sobre o pbtc permitido)
-      excessoPeso.tolerancia = excessoPeso.pbtcPermitido * toleranciaBalanca;
+      excessoPeso.porcentagemTolerancia = toleranciaBalanca;
       //
     } else if (pesoDeclarado > 0.0) {
       // Fiscalização por nota fiscal (sem tolerância)
       excessoPeso.tipo = TipoFiscalizacaoPeso.nota_fiscal;
       excessoPeso.pbtcConstatado = pesoDeclarado + tara;
+
       // não há tolerância
-      excessoPeso.tolerancia = 0.0;
+      excessoPeso.porcentagemTolerancia = 0.0;
     } else {
       // se não há peso calculado, então não há que se falar em infração
       return null;
     }
-    // Calcula o excesso verificado (com possível tolerância) e o execesso sobre o cmt (sem tolerância)
-    excessoPeso.excessoVerificado = excessoPeso.pbtcConstatado - (excessoPeso.pbtcPermitido + excessoPeso.tolerancia);
 
     // Define o responsavel
     if (opcaoNotaFiscal == OpcaoNotaFiscal.nao_possui ||
         opcaoNotaFiscal == OpcaoNotaFiscal.varios_remetentes ||
         (opcaoNotaFiscal == OpcaoNotaFiscal.unico_remetente && pesoDeclarado == 0.0)) {
       excessoPeso.responsavel = ResponsavelInfracao.transportador;
+      excessoPeso.cnpjEmbarcador = '';
     } else if (opcaoNotaFiscal == OpcaoNotaFiscal.unico_remetente && pesoDeclarado < pesoAferido) {
       excessoPeso.responsavel = ResponsavelInfracao.embarcador;
+      excessoPeso.cnpjEmbarcador = cnpj;
     } else {
       excessoPeso.responsavel = ResponsavelInfracao.embarcador_transportador;
+      excessoPeso.cnpjEmbarcador = cnpj;
     }
 
-    // verificando excesso sobre o cmt
-    if (excessoPeso.pbtcConstatado > cmt && cmt > 0.0) {
-      var excessoCmt = InfracaoExcessoCmtModel();
-      excessoCmt.tipo = excessoPeso.tipo;
-      excessoCmt.pbtcConstatado = excessoPeso.pbtcConstatado;
-      excessoCmt.cmt = cmt;
-      excessoCmt.pbtcLabel = pbtcLabel;
+    // cria a infração de excesso na cmt...
+    var excessoCmt = InfracaoExcessoCmtModel(
+      tipo: excessoPeso.tipo,
+      classificacao: classificacao,
+      carga: tipoCarga,
+      afericaoInmetro: afericaoInmetro,
+      afericaoValidade: afericaoValidade,
+      pbtcLabel: pbtcLabel,
+      pbtcConstatado: excessoPeso.pbtcConstatado,
+      cmt: cmt,
+      tara: tara,
+      pesoDeclarado: pesoDeclarado,
+    );
 
-      // retorne as duas infrações
-      return [excessoPeso, excessoCmt];
+    // complemento condicional no amparo legal
+    if (pbtcTecnico > 0.0 && pbtcTecnico < pbtcLegal) {
+      // atualiza o amparo legal...
+      excessoCmt.amparoLegal += ', Art. 100 CTB';
     }
 
-    // retorne apenas uma infração
-    return [excessoPeso];
+    // placas dos tracionados
+    excessoCmt.placasTracionados = placas ?? '';
+
+    // retorne as duas infrações
+    return [excessoPeso, excessoCmt];
   }
 }

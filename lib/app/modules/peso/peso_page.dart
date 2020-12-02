@@ -1,9 +1,7 @@
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 import 'package:fiscal/app/components/configuracao_peso_item.dart';
-import 'package:fiscal/app/components/home_appbar.dart';
 import 'package:fiscal/app/components/sim_ou_nao_dialog.dart';
 import 'package:fiscal/app/components/text_field_soma/text_field_soma_widget.dart';
-import 'package:fiscal/app/components/theme_utils.dart';
 import 'package:fiscal/app/model/veiculo_peso_model.dart';
 import 'package:fiscal/app/model/fiscalizacao_peso_model.dart';
 import 'package:flutter/material.dart';
@@ -39,37 +37,21 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
       },
       child: Observer(
         builder: (context) => Scaffold(
-          backgroundColor: Colors.grey[300],
-          appBar: HomeAppBar(controller),
-          // AppBar(
-          //   backgroundColor: Colors.grey[300],
-          //   elevation: 0,
-          //   title: Text(
-          //     widget.title,
-          //     style: TextStyle(color: ThemeUtils.primaryColor),
-          //   ),
-          //   actions: [
-          //     Container(
-          //       margin: EdgeInsets.all(10),
-          //       decoration: BoxDecoration(
-          //         color: ThemeUtils.accentColor,
-          //       ),
-          //       child: IconButton(
-          //         padding: EdgeInsets.all(10.0),
-          //         icon: Icon(
-          //           Icons.check,
-          //           size: 40,
-          //         ),
-          //         onPressed: () {
-          //           final dados = validaDados();
-          //           if (dados != null) {
-          //             Modular.to.pushNamed('/peso/infracoes_peso', arguments: dados);
-          //           }
-          //         },
-          //       ),
-          //     )
-          //   ],
-          // ),
+          backgroundColor: Colors.grey[200],
+          appBar: AppBar(
+            title: Text(widget.title),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.check),
+                onPressed: () {
+                  final dados = validaDados();
+                  if (dados != null) {
+                    Modular.to.pushNamed('/peso/infracoes_peso', arguments: dados);
+                  }
+                },
+              )
+            ],
+          ),
           body: Observer(builder: (_) {
             return PageView(
               controller: controller.pageController,
@@ -93,7 +75,7 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
               selectedItemBorderColor: Colors.white,
               selectedItemIconColor: Colors.white,
               selectedItemBackgroundColor: Theme.of(context).accentColor,
-              selectedItemLabelColor: ThemeUtils.primaryColorLight,
+              selectedItemLabelColor: Colors.white,
             ),
             items: [
               FFNavigationBarItem(
@@ -194,17 +176,11 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
                 elevation: 1,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 32.0),
-                  child: TextFormField(
-                    controller: controller.cmtController,
-                    decoration: const InputDecoration(
-                      labelText: 'CMT (kg)',
-                      labelStyle: TextStyle(fontSize: 14),
-                    ),
-                    keyboardType: TextInputType.numberWithOptions(decimal: true),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-                    ],
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
+                  child: TextFieldSomaWidget(
+                    textFieldSomaController: controller.cmtSomaController,
+                    textEditingController: controller.cmtController,
+                    label: 'CMT (kg)',
                   ),
                 ),
               ),
@@ -393,17 +369,11 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
                   elevation: 1,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 32.0),
-                    child: TextFormField(
-                      controller: controller.pesoAferidoController,
-                      decoration: const InputDecoration(
-                        labelText: 'Peso aferido (kg)',
-                        labelStyle: TextStyle(fontSize: 14),
-                      ),
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-                      ],
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
+                    child: TextFieldSomaWidget(
+                      textFieldSomaController: controller.pesoAferidoSomaController,
+                      textEditingController: controller.pesoAferidoController,
+                      label: 'Peso aferido (kg)',
                     ),
                   ),
                 ),
@@ -479,6 +449,12 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
     );
   }
 
+  String formatNumber(String number) {
+    // converte formato brasil para internacional
+    // removendo os pontos e trocando vírgula por ponto
+    return number.replaceAll('.', '').replaceAll(',', '.');
+  }
+
   FiscalizacaoPesoModel validaDados() {
     try {
       if (controller.veiculoModel == null) {
@@ -494,22 +470,23 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
       }
 
       FiscalizacaoPesoModel fiscalizacao = FiscalizacaoPesoModel(
+        classificacao: controller.veiculoModel.id,
         pbtcLegal: controller.valuePesoPorComprimento * 1000,
-        pbtcTecnico: double.tryParse(controller.limiteTecnicoController.text) ?? 0.0,
-        tara: double.tryParse(controller.taraController.text) ?? 0.0,
-        cmt: double.tryParse(controller.cmtController.text) ?? 0.0,
-        placas: controller.placasTracionadosController.text,
-        tipoCarga: controller.tipoCargaController.text,
+        pbtcTecnico: double.tryParse(formatNumber(controller.limiteTecnicoController.text)) ?? 0.0,
+        tara: double.tryParse(formatNumber(controller.taraController.text)) ?? 0.0,
+        cmt: double.tryParse(formatNumber(controller.cmtController.text)) ?? 0.0,
+        placas: controller.placasTracionadosController.text ?? '',
+        tipoCarga: controller.tipoCargaController.text ?? '',
         opcaoNotaFiscal: controller.opcaoNotaFiscal == 0
             ? OpcaoNotaFiscal.nao_possui
             : controller.opcaoNotaFiscal == 1
                 ? OpcaoNotaFiscal.varios_remetentes
                 : OpcaoNotaFiscal.unico_remetente,
-        cnpj: controller.cnpjRemetenteController.text,
-        pesoDeclarado: controller.opcaoNotaFiscal == 0 ? 0.0 : double.tryParse(controller.pesoDeclaradoController.text) ?? 0.0,
-        pesoAferido: controller.opcaoBalanca == 0 ? 0.0 : double.tryParse(controller.pesoAferidoController.text) ?? 0.0,
-        inmetro: controller.inmetroController.text,
-        validadeAfericao: controller.validadeAfericaoController.text,
+        cnpj: controller.cnpjRemetenteController.text ?? '',
+        pesoDeclarado: controller.opcaoNotaFiscal == 0 ? 0.0 : double.tryParse(formatNumber(controller.pesoDeclaradoController.text)) ?? 0.0,
+        pesoAferido: controller.opcaoBalanca == 0 ? 0.0 : double.tryParse(formatNumber(controller.pesoAferidoController.text)) ?? 0.0,
+        afericaoInmetro: controller.inmetroController.text ?? '',
+        afericaoValidade: controller.validadeAfericaoController.text ?? '',
         pbtcLabel: controller.veiculoModel.pbtc,
       );
 

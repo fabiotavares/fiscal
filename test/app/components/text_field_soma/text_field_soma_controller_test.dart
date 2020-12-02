@@ -1,7 +1,6 @@
 import 'package:flutter_modular/flutter_modular_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:fiscal/app/components/text_field_soma/text_field_soma_controller.dart';
 import 'package:fiscal/app/app_module.dart';
 
 void main() {

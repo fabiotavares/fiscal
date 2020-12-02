@@ -24,7 +24,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
 
     return Scaffold(
       drawer: Drawer(),
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[200],
       appBar: HomeAppBar(null),
       // appBar: AppBar(
       //   title: Text(widget.title),

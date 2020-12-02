@@ -40,7 +40,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     List<VeiculoPesoModel> configs = [];
 
     configs.add(VeiculoPesoModel(
-      id: 'i1',
+      id: 'I-1',
       tipo: 'Caminhão',
       limiteEixos: '6 + 6 = 12',
       comprimentoMaximo: '14m',
@@ -52,7 +52,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i2',
+      id: 'I-2',
       tipo: 'Caminhão',
       limiteEixos: '6 + 10 = 16',
       comprimentoMaximo: '14m',
@@ -64,7 +64,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i3',
+      id: 'I-3',
       tipo: 'Caminhão',
       limiteEixos: '6 + 17 = 23',
       comprimentoMaximo: '14m',
@@ -76,7 +76,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i4',
+      id: 'I-4',
       tipo: 'Caminhão',
       limiteEixos: '6 + 13,5 = 19,5',
       comprimentoMaximo: '14m',
@@ -88,7 +88,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i5',
+      id: 'I-5',
       tipo: 'Caminhão',
       limiteEixos: '6 + 13,5 = 19,5',
       comprimentoMaximo: '14m',
@@ -100,7 +100,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i6',
+      id: 'I-6',
       tipo: 'Caminhão',
       limiteEixos: '12 + 17 = 29',
       comprimentoMaximo: '14m',
@@ -112,7 +112,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i7',
+      id: 'I-7',
       tipo: 'Caminhão',
       limiteEixos: '12 + 13,5 = 25,5',
       comprimentoMaximo: '14m',
@@ -124,7 +124,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i8',
+      id: 'I-8',
       tipo: 'Caminhão',
       limiteEixos: '12 + 13,5 = 25,5',
       comprimentoMaximo: '14m',
@@ -136,7 +136,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i37',
+      id: 'I-37',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 10 + 10 + 10 = 36',
       comprimentoMaximo: '19,8m',
@@ -148,7 +148,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i38',
+      id: 'I-38',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 10 + 10 + 17 = 43',
       comprimentoMaximo: '19,8m',
@@ -160,7 +160,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i39',
+      id: 'I-39',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 10 + 17 + 17 = 50',
       comprimentoMaximo: '19,8m',
@@ -172,7 +172,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i40',
+      id: 'I-40',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 17 + 10 + 10 = 43',
       comprimentoMaximo: '19,8m',
@@ -184,7 +184,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i41',
+      id: 'I-41',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 17 + 10 + 17 = 50',
       comprimentoMaximo: '19,8m',
@@ -196,7 +196,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i42',
+      id: 'I-42',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 17 + 17 + 17 = 57',
       comprimentoMaximo: '19,8m',
@@ -208,7 +208,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i43',
+      id: 'I-43',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 13,5 + 10 + 10 = 39,5',
       comprimentoMaximo: '19,8m',
@@ -220,7 +220,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i44',
+      id: 'I-44',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 13,5 + 10 + 17 = 46,5',
       comprimentoMaximo: '19,8m',
@@ -232,7 +232,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i45',
+      id: 'I-45',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 13,5 + 17 + 17 = 53,5',
       comprimentoMaximo: '19,8m',
@@ -244,7 +244,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i46',
+      id: 'I-46',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '12 + 17 + 10 + 10 = 49',
       comprimentoMaximo: '19,8m',
@@ -256,7 +256,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i47',
+      id: 'I-47',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '12 + 17 + 10 + 17 = 56',
       comprimentoMaximo: '19,8m',
@@ -268,7 +268,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i48',
+      id: 'I-48',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '12 + 13,5 + 10 + 10 = 45,5',
       comprimentoMaximo: '19,8m',
@@ -280,7 +280,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i49',
+      id: 'I-49',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '12 + 13,5 + 10 + 17 = 52,5',
       comprimentoMaximo: '19,8m',
@@ -292,7 +292,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii32',
+      id: 'II-32',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 10 + 10 + 10 = 36',
       comprimentoMaximo: '25m',
@@ -305,7 +305,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii33',
+      id: 'II-33',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 10 + 10 + 17 = 43',
       comprimentoMaximo: '25m',
@@ -318,7 +318,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii34',
+      id: 'II-34',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 10 + 17 + 17 = 50',
       comprimentoMaximo: '25m',
@@ -331,7 +331,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii35',
+      id: 'II-35',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 17 + 10 + 10 = 43',
       comprimentoMaximo: '25m',
@@ -344,7 +344,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii36',
+      id: 'II-36',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 17 + 10 + 17 = 50',
       comprimentoMaximo: '25m',
@@ -357,7 +357,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii37',
+      id: 'II-37',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 17 + 17 + 17 = 57',
       comprimentoMaximo: '25m',
@@ -370,7 +370,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii38',
+      id: 'II-38',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 13,5 + 10 + 10 = 39,5',
       comprimentoMaximo: '25m',
@@ -383,7 +383,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii39',
+      id: 'II-39',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 13,5 + 10 + 17 = 46,5',
       comprimentoMaximo: '25m',
@@ -396,7 +396,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii40',
+      id: 'II-40',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '6 + 13,5 + 17 + 17 = 53,5',
       comprimentoMaximo: '25m',
@@ -409,7 +409,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii41',
+      id: 'II-41',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '12 + 17 + 10 + 10 = 49',
       comprimentoMaximo: '25m',
@@ -422,7 +422,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii42',
+      id: 'II-42',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '12 + 17 + 10 + 17 = 56',
       comprimentoMaximo: '25m',
@@ -435,7 +435,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii43',
+      id: 'II-43',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '12 + 13,5 + 10 + 10 = 45,5',
       comprimentoMaximo: '25m',
@@ -448,7 +448,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii44',
+      id: 'II-44',
       tipo: 'Caminhão + Reboque',
       limiteEixos: '12 + 13,5 + 10 + 17 = 52,5',
       comprimentoMaximo: '25m',
@@ -461,7 +461,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii21',
+      id: 'II-21',
       tipo: 'Caminhão + 2 Reboques',
       limiteEixos: '6 + 17 + 10 + 10 + 10 + 10 = 63',
       comprimentoMaximo: '30m',
@@ -473,7 +473,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii22',
+      id: 'II-22',
       tipo: 'Caminhão + 2 Reboques',
       limiteEixos: '6 + 17 + 10 + 10 + 10 + 17 = 70',
       comprimentoMaximo: '30m',
@@ -485,7 +485,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii23',
+      id: 'II-23',
       tipo: 'Caminhão + 2 Reboques',
       limiteEixos: '12 + 17 + 10 + 10 + 10 + 10 = 69',
       comprimentoMaximo: '30m',
@@ -497,7 +497,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i9',
+      id: 'I-9',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 10 + 10 = 26',
       comprimentoMaximo: '18,6m',
@@ -509,7 +509,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i10',
+      id: 'I-10',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 10 + 17 = 33',
       comprimentoMaximo: '18,6m',
@@ -521,7 +521,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i11',
+      id: 'I-11',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 10 + 10 + 10 = 36',
       comprimentoMaximo: '18,6m',
@@ -533,7 +533,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i12',
+      id: 'I-12',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 10 + 25,5 = 41,5',
       comprimentoMaximo: '18,6m',
@@ -545,7 +545,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i13',
+      id: 'I-13',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 10 + 10 + 17 = 43',
       comprimentoMaximo: '18,6m',
@@ -557,7 +557,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i14',
+      id: 'I-14',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 10 + 10 + 10 + 10 = 46',
       comprimentoMaximo: '18,6m',
@@ -569,7 +569,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i15',
+      id: 'I-15',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 17 + 10 = 33',
       comprimentoMaximo: '18,6m',
@@ -581,7 +581,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i16',
+      id: 'I-16',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 17 + 10 + 10 = 43',
       comprimentoMaximo: '18,6m',
@@ -593,7 +593,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i17',
+      id: 'I-17',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 13,5 + 10 + 10 = 39,5',
       comprimentoMaximo: '18,6m',
@@ -605,7 +605,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i18',
+      id: 'I-18',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 17 + 25,5 = 48,5',
       comprimentoMaximo: '18,6m',
@@ -617,7 +617,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i19',
+      id: 'I-19',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 13,5 + 25,5 = 45',
       comprimentoMaximo: '18,6m',
@@ -629,7 +629,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i20',
+      id: 'I-20',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 17 + 10 + 17 = 50',
       comprimentoMaximo: '18,6m',
@@ -641,7 +641,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i21',
+      id: 'I-21',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 13,5 + 10 + 17 = 46,5',
       comprimentoMaximo: '18,6m',
@@ -653,7 +653,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i22',
+      id: 'I-22',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 17 + 10 + 10 + 10 = 53',
       comprimentoMaximo: '18,6m',
@@ -665,7 +665,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i23',
+      id: 'I-23',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 13,5 + 10 + 10 + 10 = 49,5',
       comprimentoMaximo: '18,6m',
@@ -677,7 +677,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i24',
+      id: 'I-24',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 13,5 + 10 = 29,5',
       comprimentoMaximo: '18,6m',
@@ -689,7 +689,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i25',
+      id: 'I-25',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 13,5 + 17 = 36,5',
       comprimentoMaximo: '18,6m',
@@ -701,7 +701,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i26',
+      id: 'I-26',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '6 + 17 + 17 = 40',
       comprimentoMaximo: '18,6m',
@@ -713,7 +713,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i27',
+      id: 'I-27',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '12 + 13,5 + 10 + 17 = 52,5',
       comprimentoMaximo: '18,6m',
@@ -725,7 +725,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i28',
+      id: 'I-28',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '12 + 10 + 25,5 = 47,5',
       comprimentoMaximo: '18,6m',
@@ -737,7 +737,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i29',
+      id: 'I-29',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '12 + 17 + 25,5 = 54,5',
       comprimentoMaximo: '18,6m',
@@ -749,7 +749,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i30',
+      id: 'I-30',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '12 + 13,5 + 25,5 = 51',
       comprimentoMaximo: '18,6m',
@@ -761,7 +761,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i31',
+      id: 'I-31',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '12 + 17 + 10 = 39',
       comprimentoMaximo: '18,6m',
@@ -773,7 +773,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i32',
+      id: 'I-32',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '12 + 13,5 + 10 = 35,5',
       comprimentoMaximo: '18,6m',
@@ -785,7 +785,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i33',
+      id: 'I-33',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '12 + 17 + 17 = 46',
       comprimentoMaximo: '18,6m',
@@ -797,7 +797,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i34',
+      id: 'I-34',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '12 + 13,5 + 17 = 42,5',
       comprimentoMaximo: '18,6m',
@@ -809,7 +809,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i35',
+      id: 'I-35',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '12 + 17 + 10 + 10 = 49',
       comprimentoMaximo: '18,6m',
@@ -821,7 +821,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i36',
+      id: 'I-36',
       tipo: 'C. Trator + Semirreboque',
       limiteEixos: '12 + 13,5 + 10 + 10 = 45,5',
       comprimentoMaximo: '18,6m',
@@ -833,7 +833,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i50',
+      id: 'I-50',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 10 + 10 + 10 + 10 = 46',
       comprimentoMaximo: '19,8m',
@@ -845,7 +845,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i51',
+      id: 'I-51',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 10 + 17 + 10 + 10 = 53',
       comprimentoMaximo: '19,8m',
@@ -857,7 +857,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i52',
+      id: 'I-52',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 10 + 10 + 10 + 17 = 53',
       comprimentoMaximo: '19,8m',
@@ -869,7 +869,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i53',
+      id: 'I-53',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 17 + 10 + 10 + 10 = 53',
       comprimentoMaximo: '19,8m',
@@ -881,7 +881,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i54',
+      id: 'I-54',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 13,5 + 10 + 10 + 10 = 49,5',
       comprimentoMaximo: '19,8m',
@@ -893,7 +893,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i55',
+      id: 'I-55',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 13,5 + 17 + 10 + 10 = 56,5',
       comprimentoMaximo: '19,8m',
@@ -905,7 +905,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i56',
+      id: 'I-56',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 13,5 + 10 + 10 + 17 = 56,5',
       comprimentoMaximo: '19,8m',
@@ -917,7 +917,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii1',
+      id: 'II-1',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 10 + 10 + 10 + 10 = 46',
       comprimentoMaximo: '30m',
@@ -929,7 +929,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii2',
+      id: 'II-2',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 17 + 10 + 10 + 10 = 53',
       comprimentoMaximo: '30m',
@@ -941,7 +941,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii3',
+      id: 'II-3',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 10 + 10 + 10 + 17 = 53',
       comprimentoMaximo: '30m',
@@ -953,7 +953,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii4',
+      id: 'II-4',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 17 + 17 + 10 + 10 = 60',
       comprimentoMaximo: '30m',
@@ -965,7 +965,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii5',
+      id: 'II-5',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 17 + 17 + 10 + 17 = 67',
       comprimentoMaximo: '30m',
@@ -977,7 +977,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii6',
+      id: 'II-6',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '6 + 17 + 17 + 17 + 17 = 74',
       comprimentoMaximo: '30m',
@@ -989,7 +989,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii7',
+      id: 'II-7',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '12 + 17 + 17 + 10 + 10 = 66',
       comprimentoMaximo: '30m',
@@ -1001,7 +1001,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii8',
+      id: 'II-8',
       tipo: 'C. Trator + Semirreboque + Reboque',
       limiteEixos: '12 + 17 + 17 + 10 + 17 = 73',
       comprimentoMaximo: '30m',
@@ -1013,7 +1013,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i57',
+      id: 'I-57',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 10 + 10 + 10 = 36',
       comprimentoMaximo: '19,8m',
@@ -1025,7 +1025,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i58',
+      id: 'I-58',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 17 + 10 + 10 = 43',
       comprimentoMaximo: '19,8m',
@@ -1037,7 +1037,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i59',
+      id: 'I-59',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 13,5 + 10 + 10 = 39,5',
       comprimentoMaximo: '19,8m',
@@ -1049,7 +1049,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i60',
+      id: 'I-60',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 10 + 17 + 10 = 43',
       comprimentoMaximo: '19,8m',
@@ -1061,7 +1061,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i61',
+      id: 'I-61',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 17 + 17 + 10 = 50',
       comprimentoMaximo: '19,8m',
@@ -1073,7 +1073,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i62',
+      id: 'I-62',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 13,5 + 17 + 10 = 46,5',
       comprimentoMaximo: '19,8m',
@@ -1085,7 +1085,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i63',
+      id: 'I-63',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 10 + 17 + 17 = 50',
       comprimentoMaximo: '19,8m',
@@ -1097,7 +1097,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i64',
+      id: 'I-64',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 17 + 17 + 17 = 57',
       comprimentoMaximo: '19,8m',
@@ -1109,7 +1109,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'i65',
+      id: 'I-65',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 13,5 + 17 + 17 = 53,5',
       comprimentoMaximo: '19,8m',
@@ -1121,7 +1121,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii9',
+      id: 'I-i9',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 10 + 10 + 10 = 36',
       comprimentoMaximo: '30m',
@@ -1133,7 +1133,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii10',
+      id: 'II-10',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 17 + 10 + 10 = 43',
       comprimentoMaximo: '30m',
@@ -1145,7 +1145,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii11',
+      id: 'II-11',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 13,5 + 10 + 10 = 39,5',
       comprimentoMaximo: '30m',
@@ -1157,7 +1157,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii12',
+      id: 'II-12',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 10 + 17 + 10 = 43',
       comprimentoMaximo: '30m',
@@ -1169,7 +1169,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii13',
+      id: 'II-13',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 17 + 17 + 10 = 50',
       comprimentoMaximo: '30m',
@@ -1181,7 +1181,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii14',
+      id: 'II-14',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 13,5 + 17 + 10 = 46,5',
       comprimentoMaximo: '30m',
@@ -1193,7 +1193,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii15',
+      id: 'II-15',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 10 + 17 + 17 = 50',
       comprimentoMaximo: '30m',
@@ -1205,7 +1205,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii16',
+      id: 'II-16',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 17 + 17 + 17 = 57',
       comprimentoMaximo: '30m',
@@ -1217,7 +1217,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii17',
+      id: 'II-17',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 13,5 + 17 + 17 = 53,5',
       comprimentoMaximo: '30m',
@@ -1229,7 +1229,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii18',
+      id: 'II-18',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 17 + 17 + 25,5 = 65,5',
       comprimentoMaximo: '30m',
@@ -1241,7 +1241,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii19',
+      id: 'II-19',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '6 + 17 + 25,5 + 25,5 = 74',
       comprimentoMaximo: '30m',
@@ -1253,7 +1253,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii20',
+      id: 'II-20',
       tipo: 'C. Trator + 2 Semirreboques',
       limiteEixos: '12 + 17 + 17 + 17 = 63',
       comprimentoMaximo: '30m',
@@ -1265,7 +1265,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii24',
+      id: 'II-24',
       tipo: 'C. Trator + 3 Semirreboques',
       limiteEixos: '6 + 17 + 17 + 10 + 10 = 60',
       comprimentoMaximo: '30m',
@@ -1277,7 +1277,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii25',
+      id: 'II-25',
       tipo: 'C. Trator + 3 Semirreboques',
       limiteEixos: '6 + 17 + 10 + 17 + 10 = 60',
       comprimentoMaximo: '30m',
@@ -1289,7 +1289,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii26',
+      id: 'II-26',
       tipo: 'C. Trator + 3 Semirreboques',
       limiteEixos: '6 + 17 + 10 + 10 + 17 = 60',
       comprimentoMaximo: '30m',
@@ -1301,7 +1301,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii27',
+      id: 'II-27',
       tipo: 'C. Trator + 3 Semirreboques',
       limiteEixos: '6 + 17 + 17 + 17 + 10 = 67',
       comprimentoMaximo: '30m',
@@ -1313,7 +1313,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii28',
+      id: 'II-28',
       tipo: 'C. Trator + 3 Semirreboques',
       limiteEixos: '6 + 17 + 17 + 10 + 17 = 67',
       comprimentoMaximo: '30m',
@@ -1325,7 +1325,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii29',
+      id: 'II-29',
       tipo: 'C. Trator + 3 Semirreboques',
       limiteEixos: '6 + 17 + 10 + 17 + 17 = 67',
       comprimentoMaximo: '30m',
@@ -1337,7 +1337,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii30',
+      id: 'II-30',
       tipo: 'C. Trator + 3 Semirreboques',
       limiteEixos: '6 + 17 + 17 + 17 + 17 = 74',
       comprimentoMaximo: '30m',
@@ -1349,7 +1349,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'ii31',
+      id: 'II-31',
       tipo: 'C. Trator + 3 Semirreboques',
       limiteEixos: '6 + 13,5 + 17 + 10 + 10 = 56,5',
       comprimentoMaximo: '30m',
@@ -1361,7 +1361,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'iv1',
+      id: 'IV-1',
       tipo: 'C. Trator + SR + Dolly + SR',
       limiteEixos: '6 + 17 + 25,5 + 17 + 25,5 = 91',
       comprimentoMaximo: '30m',
@@ -1373,7 +1373,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'iv2',
+      id: 'IV-2',
       tipo: 'C. Trator + SR + Dolly + SR',
       limiteEixos: '6 + 17 + 17 + 17 + 25,5 = 82,5',
       comprimentoMaximo: '30m',
@@ -1385,7 +1385,7 @@ abstract class _ConfiguracoesControllerBase with Store {
     ));
 
     configs.add(VeiculoPesoModel(
-      id: 'iv3',
+      id: 'IV-3',
       tipo: 'C. Trator + SR + Dolly + SR',
       limiteEixos: '6 + 17 + 25,5 + 17 + 17 = 82,5',
       comprimentoMaximo: '30m',

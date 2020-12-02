@@ -8,7 +8,7 @@ import 'configuracoes_controller.dart';
 
 class ConfiguracoesPage extends StatefulWidget {
   final String title;
-  const ConfiguracoesPage({Key key, this.title = "Configurações"}) : super(key: key);
+  const ConfiguracoesPage({Key key, this.title = "Port. 63/09 Denatran"}) : super(key: key);
 
   @override
   _ConfiguracoesPageState createState() => _ConfiguracoesPageState();
@@ -27,7 +27,15 @@ class _ConfiguracoesPageState extends ModularState<ConfiguracoesPage, Configurac
   @override
   Widget build(BuildContext context) {
     var myAppBar = AppBar(
-      title: Text(widget.title),
+      iconTheme: IconThemeData(
+        color: Colors.black, //change your color here
+      ),
+      backgroundColor: Colors.grey[300],
+      elevation: 0,
+      title: Text(
+        widget.title,
+        style: TextStyle(color: Colors.black),
+      ),
     );
 
     return Scaffold(
@@ -60,55 +68,65 @@ class _ConfiguracoesPageState extends ModularState<ConfiguracoesPage, Configurac
                   return Column(
                     children: [
                       Observer(builder: (_) {
-                        return Container(
-                          width: ScreenUtil().screenWidth * .8,
-                          height: 60,
-                          child: Center(
-                            child: DropdownButton<String>(
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                              isExpanded: true,
-                              value: controller.filtroSelecionado,
-                              items: [
-                                DropdownMenuItem<String>(
-                                  value: 'Todos',
-                                  child: Text('Todos'),
+                        return Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Material(
+                            // color: Colors.grey[300],
+                            elevation: 10,
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              width: ScreenUtil().screenWidth,
+                              height: 60,
+                              padding: const EdgeInsets.all(16.0),
+                              child: Center(
+                                child: DropdownButton<String>(
+                                  underline: Divider(color: Colors.transparent),
+                                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                                  isExpanded: true,
+                                  value: controller.filtroSelecionado,
+                                  items: [
+                                    DropdownMenuItem<String>(
+                                      value: 'Todos',
+                                      child: Text('Todos'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'Caminhão',
+                                      child: Text('Caminhão'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'Caminhão + Reboque',
+                                      child: Text('Caminhão + Reboque'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'Caminhão + 2 Reboques',
+                                      child: Text('Caminhão + 2 Reboques'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'C. Trator + Semirreboque',
+                                      child: Text('C. Trator + Semirreboque'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'C. Trator + Semirreboque + Reboque',
+                                      child: Text('C. Trator + Semirreboque + Reboque'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'C. Trator + 2 Semirreboques',
+                                      child: Text('C. Trator + 2 Semirreboques'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'C. Trator + 3 Semirreboques',
+                                      child: Text('C. Trator + 3 Semirreboques'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'C. Trator + SR + Dolly + SR',
+                                      child: Text('C. Trator + SR + Dolly + SR'),
+                                    ),
+                                  ],
+                                  onChanged: (String value) {
+                                    controller.changeFiltroSelecionado(value);
+                                  },
                                 ),
-                                DropdownMenuItem<String>(
-                                  value: 'Caminhão',
-                                  child: Text('Caminhão'),
-                                ),
-                                DropdownMenuItem<String>(
-                                  value: 'Caminhão + Reboque',
-                                  child: Text('Caminhão + Reboque'),
-                                ),
-                                DropdownMenuItem<String>(
-                                  value: 'Caminhão + 2 Reboques',
-                                  child: Text('Caminhão + 2 Reboques'),
-                                ),
-                                DropdownMenuItem<String>(
-                                  value: 'C. Trator + Semirreboque',
-                                  child: Text('C. Trator + Semirreboque'),
-                                ),
-                                DropdownMenuItem<String>(
-                                  value: 'C. Trator + Semirreboque + Reboque',
-                                  child: Text('C. Trator + Semirreboque + Reboque'),
-                                ),
-                                DropdownMenuItem<String>(
-                                  value: 'C. Trator + 2 Semirreboques',
-                                  child: Text('C. Trator + 2 Semirreboques'),
-                                ),
-                                DropdownMenuItem<String>(
-                                  value: 'C. Trator + 3 Semirreboques',
-                                  child: Text('C. Trator + 3 Semirreboques'),
-                                ),
-                                DropdownMenuItem<String>(
-                                  value: 'C. Trator + SR + Dolly + SR',
-                                  child: Text('C. Trator + SR + Dolly + SR'),
-                                ),
-                              ],
-                              onChanged: (String value) {
-                                controller.changeFiltroSelecionado(value);
-                              },
+                              ),
                             ),
                           ),
                         );

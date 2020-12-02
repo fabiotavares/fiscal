@@ -10,11 +10,21 @@ class HomeAppBar extends PreferredSize {
       : super(
           preferredSize: Size(double.infinity, 115),
           child: AppBar(
-              backgroundColor: Colors.grey[300],
-              title: Text('Petô - Fiscal de Trânsito', style: TextStyle(color: Colors.white)),
+              backgroundColor: Colors.grey[200],
+              title: Text('Fiscal de Trânsito', style: TextStyle(color: Colors.white)),
+              // title: ListTile(
+              //   title: Text(
+              //     'Petô',
+              //     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+              //   ),
+              //   subtitle: Text(
+              //     'Fiscal de Trânsito',
+              //     style: TextStyle(color: Colors.white),
+              //   ),
+              // ),
               actions: [
                 IconButton(
-                  icon: Icon(Icons.location_on),
+                  icon: Icon(Icons.add),
                   onPressed: () {},
                 ),
               ],
