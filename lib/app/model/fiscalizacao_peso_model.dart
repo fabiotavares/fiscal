@@ -23,7 +23,6 @@ class FiscalizacaoPesoModel {
   final String afericaoInmetro;
   final String afericaoValidade;
   final String pbtcLabel;
-  final toleranciaBalanca = 0.05;
 
   FiscalizacaoPesoModel({
     this.classificacao,
@@ -61,61 +60,53 @@ class FiscalizacaoPesoModel {
   }
 
   List<InfracaoModel> getInfracoes() {
+    // se não há peso declarado ou aferido, retorne nulo
+    if (pesoAferido <= 0.0 && (pesoDeclarado <= 0.0 || tara <= 0.0)) {
+      return null;
+    }
+
+    // pbtc considerado deve ser o menor entre os valores legal e técnico
+    double pbtcPermitido = pbtcLegal;
+    if (pbtcTecnico > 0.0 && pbtcTecnico < pbtcLegal) {
+      pbtcPermitido = pbtcTecnico;
+    }
+
     // cria a infração de excesso de peso...
     var excessoPeso = InfracaoExcessoPesoModel(
+      tipo: pesoAferido > 0.0 ? TipoFiscalizacaoPeso.balanca : TipoFiscalizacaoPeso.nota_fiscal,
+      pbtcPermitido: pbtcPermitido,
+      pbtcConstatado: pesoAferido > 0.0 ? pesoAferido : pesoDeclarado + tara,
+      tara: tara,
+      pesoDeclarado: pesoDeclarado,
+      pbtcLabel: pbtcLabel,
       classificacao: classificacao,
       carga: tipoCarga ?? '',
       afericaoInmetro: afericaoInmetro ?? '',
       afericaoValidade: afericaoValidade ?? '',
-      pbtcLabel: pbtcLabel,
-      tara: tara,
-      pesoDeclarado: pesoDeclarado,
+      placasTracionados: placas ?? '',
     );
 
-    // placas dos tracionados
-    excessoPeso.placasTracionados = placas ?? '';
-
-    // pbtc considerado deve ser o menor entre os valores legal e técnico
-    if (pbtcTecnico > 0.0 && pbtcTecnico < pbtcLegal) {
-      excessoPeso.pbtcPermitido = pbtcTecnico;
-      // atualiza o amparo legal...
+    // complemento condicional no amparo legal
+    if (pbtcPermitido != pbtcLegal) {
+      // usando o limite do fabricante
       excessoPeso.amparoLegal += ', Art. 100 CTB';
-    } else {
-      excessoPeso.pbtcPermitido = pbtcLegal;
-    }
-
-    if (pesoAferido > 0.0) {
-      // fiscalização por balança tem prioridade
-      excessoPeso.tipo = TipoFiscalizacaoPeso.balanca;
-      excessoPeso.pbtcConstatado = pesoAferido;
-      // aplicar a tolerância prevista para balança (sobre o pbtc permitido)
-      excessoPeso.porcentagemTolerancia = toleranciaBalanca;
-      //
-    } else if (pesoDeclarado > 0.0) {
-      // Fiscalização por nota fiscal (sem tolerância)
-      excessoPeso.tipo = TipoFiscalizacaoPeso.nota_fiscal;
-      excessoPeso.pbtcConstatado = pesoDeclarado + tara;
-
-      // não há tolerância
-      excessoPeso.porcentagemTolerancia = 0.0;
-    } else {
-      // se não há peso calculado, então não há que se falar em infração
-      return null;
     }
 
     // Define o responsavel
-    if (opcaoNotaFiscal == OpcaoNotaFiscal.nao_possui ||
-        opcaoNotaFiscal == OpcaoNotaFiscal.varios_remetentes ||
-        (opcaoNotaFiscal == OpcaoNotaFiscal.unico_remetente && pesoDeclarado == 0.0)) {
-      excessoPeso.responsavel = ResponsavelInfracao.transportador;
-      excessoPeso.cnpjEmbarcador = '';
-    } else if (opcaoNotaFiscal == OpcaoNotaFiscal.unico_remetente && pesoDeclarado < pesoAferido) {
-      excessoPeso.responsavel = ResponsavelInfracao.embarcador;
-      excessoPeso.cnpjEmbarcador = cnpj;
-    } else {
-      excessoPeso.responsavel = ResponsavelInfracao.embarcador_transportador;
-      excessoPeso.cnpjEmbarcador = cnpj;
+    ResponsavelInfracao responsavel = ResponsavelInfracao.transportador;
+    var cnpj = '';
+    if (opcaoNotaFiscal == OpcaoNotaFiscal.unico_remetente && pesoDeclarado > 0.0 && tara > 0.0) {
+      if ((pesoDeclarado + tara) > pbtcPermitido) {
+        responsavel = ResponsavelInfracao.embarcador_transportador;
+        cnpj = this.cnpj;
+      } else if ((pesoDeclarado + tara) < pesoAferido) {
+        responsavel = ResponsavelInfracao.embarcador;
+        cnpj = this.cnpj;
+      }
     }
+    // Atribuindo valores calculados
+    excessoPeso.responsavel = responsavel;
+    excessoPeso.cnpjEmbarcador = cnpj;
 
     // cria a infração de excesso na cmt...
     var excessoCmt = InfracaoExcessoCmtModel(
@@ -129,6 +120,7 @@ class FiscalizacaoPesoModel {
       cmt: cmt,
       tara: tara,
       pesoDeclarado: pesoDeclarado,
+      placasTracionados: excessoPeso.placasTracionados,
     );
 
     // complemento condicional no amparo legal
@@ -136,9 +128,6 @@ class FiscalizacaoPesoModel {
       // atualiza o amparo legal...
       excessoCmt.amparoLegal += ', Art. 100 CTB';
     }
-
-    // placas dos tracionados
-    excessoCmt.placasTracionados = placas ?? '';
 
     // retorne as duas infrações
     return [excessoPeso, excessoCmt];

@@ -19,6 +19,22 @@ final $ConfiguracoesController = BindInject(
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ConfiguracoesController on _ConfiguracoesControllerBase, Store {
+  final _$scrollToTopVisibleAtom =
+      Atom(name: '_ConfiguracoesControllerBase.scrollToTopVisible');
+
+  @override
+  bool get scrollToTopVisible {
+    _$scrollToTopVisibleAtom.reportRead();
+    return super.scrollToTopVisible;
+  }
+
+  @override
+  set scrollToTopVisible(bool value) {
+    _$scrollToTopVisibleAtom.reportWrite(value, super.scrollToTopVisible, () {
+      super.scrollToTopVisible = value;
+    });
+  }
+
   final _$filtroSelecionadoAtom =
       Atom(name: '_ConfiguracoesControllerBase.filtroSelecionado');
 
@@ -88,6 +104,7 @@ mixin _$ConfiguracoesController on _ConfiguracoesControllerBase, Store {
   @override
   String toString() {
     return '''
+scrollToTopVisible: ${scrollToTopVisible},
 filtroSelecionado: ${filtroSelecionado},
 configuracoesFuture: ${configuracoesFuture}
     ''';

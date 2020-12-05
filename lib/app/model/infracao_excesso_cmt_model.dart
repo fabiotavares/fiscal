@@ -1,7 +1,9 @@
 import 'package:fiscal/app/components/text_with_copy_button.dart';
+import 'package:fiscal/app/utils/constants.dart';
+import 'package:fiscal/app/model/gravidade_infracao_model.dart';
 import 'package:fiscal/app/model/infracao_model.dart';
+import 'package:fiscal/app/utils/numbers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InfracaoExcessoCmtModel extends InfracaoModel {
@@ -15,6 +17,7 @@ class InfracaoExcessoCmtModel extends InfracaoModel {
   String carga;
   String afericaoInmetro;
   String afericaoValidade;
+  String placasTracionados;
 
   InfracaoExcessoCmtModel({
     this.tipo,
@@ -27,37 +30,32 @@ class InfracaoExcessoCmtModel extends InfracaoModel {
     this.carga,
     this.afericaoInmetro,
     this.afericaoValidade,
+    this.placasTracionados,
   }) : super(
           artigoCtb: 'Art. 231 X',
           amparoLegal: 'Res 210/211, 290, 803 CONTRAN',
           medidaAdministrativa: 'Retenção do veículo e transbordo de carga excedente',
           responsavel: ResponsavelInfracao.proprietario,
-        );
+        ) {
+    // determinando o código e gravidade da infração
+    if (excessoVerificado > 1000.0) {
+      var valor = (excessoVerificado / 500.0).ceil() * VALOR_INFRACAO_GRAVISSIMA;
+      super.gravidade = GravidadeInfracaoModel.gravissima(valor: valor);
+      super.codigo = '689-40';
+    } else if (excessoVerificado > 600.0) {
+      super.gravidade = GravidadeInfracaoModel.grave();
+      super.codigo = '689-00';
+    } else if (excessoVerificado > 0.0) {
+      super.gravidade = GravidadeInfracaoModel.media();
+      super.codigo = '688-20';
+    }
+  }
 
   double get excessoVerificado {
     if (cmt > 0) {
       return pbtcConstatado - cmt;
     }
     return 0.0;
-  }
-
-  String get codigo {
-    // descobre o código certo de acordo com o tamano do excesso
-    if (excessoVerificado <= 0) {
-      // retorna null se não há excesso de cmt
-      return null;
-    }
-
-    if (excessoVerificado <= 600) {
-      super.gravidade = GravidadeInfracao.media;
-      return '688-20';
-    }
-    if (excessoVerificado <= 1000) {
-      super.gravidade = GravidadeInfracao.grave;
-      return '689-00';
-    }
-    super.gravidade = GravidadeInfracao.gravissima;
-    return '689-40';
   }
 
   String get tipoFiscalizacao {
@@ -73,22 +71,8 @@ class InfracaoExcessoCmtModel extends InfracaoModel {
     }
   }
 
-  String getValorQuilosFormatado(double value) {
-    final num = FlutterMoneyFormatter(
-        amount: value,
-        settings: MoneyFormatterSettings(
-          symbol: 'kg',
-          thousandSeparator: '.',
-          decimalSeparator: ',',
-          symbolAndNumberSeparator: ' ',
-          fractionDigits: 2,
-        ));
-
-    return num.output.symbolOnRight;
-  }
-
   @override
-  Widget getInfracaoWidget() {
+  Widget getInfracaoView() {
     // retorna uma representação pra ser exibida na tela
     return Container(
       padding: EdgeInsets.only(top: 8.0, bottom: 12.0),
@@ -115,7 +99,7 @@ class InfracaoExcessoCmtModel extends InfracaoModel {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 10),
-                        getDadosInfracao(),
+                        getInfracaoDetalhes(),
                       ],
                     ),
                   )
@@ -132,14 +116,14 @@ class InfracaoExcessoCmtModel extends InfracaoModel {
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: 10),
-                            getDadosInfracao(),
+                            getInfracaoDetalhes(),
                           ],
                         ),
                       ),
                       TextWithCopyButton(
                         title: 'Sugestão para o auto:',
-                        body: '${sugestoesAuto[0]}',
-                        toCopy: '${sugestoesAuto[0]}',
+                        body: '${getSugestao()}',
+                        toCopy: '${getSugestao()}',
                         backgoundColor: Colors.grey[200],
                         margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                         padding: EdgeInsets.only(left: 16.0, right: 8.0, bottom: 16.0, top: 16.0),
@@ -150,8 +134,54 @@ class InfracaoExcessoCmtModel extends InfracaoModel {
     );
   }
 
-  @override
-  List<String> get sugestoesAuto {
+  Widget getInfracaoDetalhes() {
+    // retorna uma apresentação dos dados consolidados da infração
+    if (excessoVerificado <= 0.0) {
+      return Text('- Tipo de fiscalização: ${this.tipoFiscalizacao}\n' +
+          '- CMT: ${Numbers.getPesoFormatado(cmt)}\n' +
+          '- $pbtcLabel constatado: ${Numbers.getPesoFormatado(pbtcConstatado)}\n' +
+          '- Excesso verificado: ${Numbers.getPesoFormatado(excessoVerificado)}\n' +
+          '- ${super.amparoLegal}');
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextWithCopyButton(
+          title: 'Código: ${this.codigo}',
+          toCopy: '${this.codigo}',
+          backgoundColor: Colors.grey[200],
+          margin: EdgeInsets.symmetric(vertical: 2),
+          padding: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 8.0, left: 9.0),
+        ),
+        Text('- CTB: ${super.artigoCtb}'),
+        Text('- Tipo de fiscalização: ${this.tipoFiscalizacao}'),
+        TextWithCopyButton(
+          title: '- CMT: ${Numbers.getPesoFormatado(cmt)}',
+          toCopy: '$cmt',
+          backgoundColor: Colors.grey[200],
+          margin: EdgeInsets.symmetric(vertical: 2),
+          padding: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 8.0, left: 9.0),
+        ),
+        TextWithCopyButton(
+          title: '- $pbtcLabel constatado: ${Numbers.getPesoFormatado(pbtcConstatado)}',
+          toCopy: '$pbtcConstatado',
+          backgoundColor: Colors.grey[200],
+          margin: EdgeInsets.symmetric(vertical: 2),
+          padding: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 8.0, left: 9.0),
+        ),
+        Text('- Excesso verificado: ${Numbers.getPesoFormatado(excessoVerificado)}'),
+        Text('- Gravidade: ${super.gravidade.gravidade}'),
+        Text('- Pontos perdidos: ${super.gravidade.pontos}'),
+        Text('- Valor: ${super.gravidade.getValorFormatado()}'),
+        Text('- Responsável: ${super.getResponsavel()}'),
+        Text('- ${super.amparoLegal}'),
+        Text('- Medida administrativa: ${super.medidaAdministrativa}'),
+      ],
+    );
+  }
+
+  String getSugestao() {
     //sobre aferição da balança
     var balancaAfericao = '';
     if (tipo == TipoFiscalizacaoPeso.balanca) {
@@ -181,72 +211,25 @@ class InfracaoExcessoCmtModel extends InfracaoModel {
 
     // sobre placas dos tracionados
     var obsPlacas = '';
-    if (super.placasTracionados.isNotEmpty) {
-      obsPlacas = '- Tracionados: ${super.placasTracionados};\n';
+    if (placasTracionados.isNotEmpty) {
+      obsPlacas = '- Tracionados: $placasTracionados;\n';
     }
 
     // sobre o PBTC (aferido ou tara + lotação)
     var obsPbtc = '';
     if (tipo == TipoFiscalizacaoPeso.nota_fiscal) {
-      obsPbtc = '- Tara: ${getValorQuilosFormatado(tara)};\n' + '- Lotação: ${getValorQuilosFormatado(pesoDeclarado)};\n';
+      obsPbtc = '- Tara: ${Numbers.getPesoFormatado(tara)};\n' + '- Lotação: ${Numbers.getPesoFormatado(pesoDeclarado)};\n';
     } else {
-      obsPbtc = '- $pbtcLabel: ${getValorQuilosFormatado(pbtcConstatado)};\n';
+      obsPbtc = '- $pbtcLabel: ${Numbers.getPesoFormatado(pbtcConstatado)};\n';
     }
 
-    return [
-      '- Classif. $classificacao (Port. 63/09 DENATRAN);\n' +
-          '- CMT: ${getValorQuilosFormatado(cmt)} (plac. fabricante);\n' +
-          '$obsPbtc' +
-          '$balancaAfericao' +
-          '$obsCarga' +
-          '$obsPlacas' +
-          '- $amparoLegal;\n' +
-          '- Retido para transbordo.'
-    ];
-  }
-
-  Widget getDadosInfracao() {
-    // retorna uma apresentação dos dados consolidados da infração
-    if (excessoVerificado <= 0.0) {
-      return Text('- Tipo de fiscalização: ${this.tipoFiscalizacao}\n' +
-          '- CMT: ${getValorQuilosFormatado(cmt)}\n' +
-          '- $pbtcLabel constatado: ${getValorQuilosFormatado(pbtcConstatado)}\n' +
-          '- Excesso verificado: ${getValorQuilosFormatado(excessoVerificado)}\n' +
-          '- ${super.amparoLegal}');
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TextWithCopyButton(
-          title: 'Código: ${this.codigo}',
-          toCopy: '${this.codigo}',
-          backgoundColor: Colors.grey[200],
-          margin: EdgeInsets.symmetric(vertical: 2),
-          padding: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 8.0, left: 9.0),
-        ),
-        Text('- CTB: ${super.artigoCtb}'),
-        Text('- Tipo de fiscalização: ${this.tipoFiscalizacao}'),
-        TextWithCopyButton(
-          title: '- CMT: ${getValorQuilosFormatado(cmt)} (plac. fabricante)',
-          toCopy: '$cmt',
-          backgoundColor: Colors.grey[200],
-          margin: EdgeInsets.symmetric(vertical: 2),
-          padding: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 8.0, left: 9.0),
-        ),
-        TextWithCopyButton(
-          title: '- $pbtcLabel constatado: ${getValorQuilosFormatado(pbtcConstatado)}',
-          toCopy: '$pbtcConstatado',
-          backgoundColor: Colors.grey[200],
-          margin: EdgeInsets.symmetric(vertical: 2),
-          padding: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 8.0, left: 9.0),
-        ),
-        Text('- Excesso verificado: ${getValorQuilosFormatado(excessoVerificado)}'),
-        Text('- Gravidade: ${super.getGravidade()}'),
-        Text('- Responsável: ${super.getResponsavel()}'),
-        Text('- ${super.amparoLegal}'),
-        Text('- Medida administrativa: ${super.medidaAdministrativa}'),
-      ],
-    );
+    return '- Classif. $classificacao (Port. 63/09 DENATRAN);\n' +
+        '- CMT: ${Numbers.getPesoFormatado(cmt)} (plac. fabricante);\n' +
+        '$obsPbtc' +
+        '$balancaAfericao' +
+        '$obsCarga' +
+        '$obsPlacas' +
+        '- $amparoLegal;\n' +
+        '- Retido para transbordo.';
   }
 }

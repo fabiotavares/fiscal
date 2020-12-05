@@ -31,7 +31,7 @@ class ConfiguracaoPesoItem extends StatelessWidget {
             margin: EdgeInsets.only(top: 8.0, bottom: 2.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: ThemeUtils.accentColor,
+              color: ThemeUtils.primaryColor,
             ),
             child: Center(
               child: Text(
@@ -39,7 +39,7 @@ class ConfiguracaoPesoItem extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  // color: Colors.white,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -49,27 +49,35 @@ class ConfiguracaoPesoItem extends StatelessWidget {
             veiculoModel.tipo,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
-          Divider(
-            thickness: 1,
-            height: 20,
+          SizedBox(height: 8.0),
+          Divider(thickness: 1, height: 0.0),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 30),
+            // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Column(
+              children: [
+                Image.asset('assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}a.png'),
+                SizedBox(height: 5),
+                Image.asset('assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}b.png'),
+              ],
+            ),
           ),
-          Image.asset('assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}a.png'),
-          Image.asset('assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}b.png'),
           SizedBox(height: 5),
           Text(
             'Comprimento máximo: ${veiculoModel.comprimentoMaximo}',
             style: TextStyle(color: Colors.grey, fontSize: 14),
           ),
+          SizedBox(height: 5),
           Text(
             veiculoModel.limiteEixos,
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 14),
           ),
-          SizedBox(height: 5),
-          Divider(thickness: 1),
+          SizedBox(height: 8.0),
+          Divider(thickness: 1, height: 0.0),
           controller != null ? showRadioOptions() : showReadOnly(),
           if (veiculoModel.obs != null)
             Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: Text(
                 veiculoModel.obs,
                 style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
@@ -147,7 +155,7 @@ class ConfiguracaoPesoItem extends StatelessWidget {
 
   Widget showReadOnly() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

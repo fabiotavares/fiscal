@@ -1,3 +1,5 @@
+import 'package:fiscal/app/model/gravidade_infracao_model.dart';
+import 'package:fiscal/app/model/sugestao_auto_model.dart';
 import 'package:flutter/material.dart';
 
 enum ResponsavelInfracao {
@@ -8,13 +10,6 @@ enum ResponsavelInfracao {
   embarcador_transportador,
 }
 
-enum GravidadeInfracao {
-  leve,
-  media,
-  grave,
-  gravissima,
-}
-
 enum TipoFiscalizacaoPeso {
   balanca,
   nota_fiscal,
@@ -23,26 +18,22 @@ enum TipoFiscalizacaoPeso {
 class InfracaoModel {
   String codigo;
   String artigoCtb;
-  String amparoLegal;
-  String observacaoAuto;
+  GravidadeInfracaoModel gravidade;
   String medidaAdministrativa;
+  String amparoLegal;
   ResponsavelInfracao responsavel;
-  double valor;
-  String observacoes;
-  GravidadeInfracao gravidade;
-  String placasTracionados;
+  List<SugestaoAutoModel> sugestoes;
+  // String observacoes;
 
   InfracaoModel({
     this.codigo,
     this.artigoCtb,
     this.amparoLegal,
-    this.observacaoAuto,
+    this.sugestoes,
     this.medidaAdministrativa,
     this.responsavel,
-    this.valor,
-    this.observacoes,
     this.gravidade,
-    this.placasTracionados,
+    // this.observacoes,
   });
 
   String getResponsavel() {
@@ -67,31 +58,8 @@ class InfracaoModel {
     }
   }
 
-  String getGravidade() {
-    switch (gravidade.index) {
-      case 0:
-        return 'Leve';
-        break;
-      case 1:
-        return 'Média';
-        break;
-      case 2:
-        return 'Grave';
-        break;
-      case 3:
-        return 'Gravíssima';
-        break;
-      default:
-        return null;
-    }
-  }
-
-  Widget getInfracaoWidget() {
+  Widget getInfracaoView() {
     // retorna uma representação pra ser exibida na tela
     return Container();
-  }
-
-  List<String> get sugestoesAuto {
-    return ['Em Breve'];
   }
 }

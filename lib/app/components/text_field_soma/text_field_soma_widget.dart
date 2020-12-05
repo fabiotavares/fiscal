@@ -39,7 +39,7 @@ class TextFieldSomaWidget extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: Icon(
-                      Icons.remove_circle,
+                      Icons.remove_circle_outline,
                       color: ThemeUtils.theme.errorColor,
                     ),
                     onPressed: () {
@@ -48,8 +48,8 @@ class TextFieldSomaWidget extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(
-                      Icons.add_circle,
-                      color: ThemeUtils.accentColor,
+                      Icons.add_circle_outline,
+                      color: ThemeUtils.primaryColor,
                     ),
                     onPressed: () {
                       GetDoubleNumberDialog.show(context: context, valueController: _newValue).then((value) {

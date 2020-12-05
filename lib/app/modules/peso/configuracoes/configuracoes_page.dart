@@ -41,6 +41,28 @@ class _ConfiguracoesPageState extends ModularState<ConfiguracoesPage, Configurac
     return Scaffold(
       appBar: myAppBar,
       backgroundColor: Colors.grey[300],
+      floatingActionButton: Observer(builder: (_) {
+        return AnimatedOpacity(
+          opacity: controller.scrollToTopVisible ? 1.0 : 0.0,
+          duration: Duration(milliseconds: 300),
+          child: Visibility(
+            visible: controller.scrollToTopVisible,
+            child: FloatingActionButton(
+              mini: true,
+              child: Icon(Icons.vertical_align_top_rounded),
+              backgroundColor: Colors.white,
+              onPressed: () {
+                controller.scrollController.animateTo(
+                  0,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                );
+              },
+            ),
+          ),
+        );
+      }),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Observer(builder: (_) {
         return FutureBuilder<List<VeiculoPesoModel>>(
           future: controller.configuracoesFuture,
@@ -81,7 +103,8 @@ class _ConfiguracoesPageState extends ModularState<ConfiguracoesPage, Configurac
                               child: Center(
                                 child: DropdownButton<String>(
                                   underline: Divider(color: Colors.transparent),
-                                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                                  style: TextStyle(color: Colors.black),
+                                  dropdownColor: Colors.grey[200],
                                   isExpanded: true,
                                   value: controller.filtroSelecionado,
                                   items: [
@@ -134,9 +157,8 @@ class _ConfiguracoesPageState extends ModularState<ConfiguracoesPage, Configurac
                       Expanded(
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          //width: double.infinity,
-                          //height: ScreenUtil().screenHeight - (myAppBar.preferredSize.height + ScreenUtil().statusBarHeight),
                           child: ListView.builder(
+                            controller: controller.scrollController,
                             itemCount: configs.length,
                             itemBuilder: (context, index) {
                               var config = configs[index];

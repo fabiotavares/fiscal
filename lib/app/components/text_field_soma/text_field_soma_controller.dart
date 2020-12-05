@@ -1,4 +1,4 @@
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:fiscal/app/utils/numbers.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,7 @@ abstract class _TextFieldSomaControllerBase with Store {
       if (aux.isNotEmpty) {
         aux += ' + ';
       }
-      aux += '${getNumberFormat(element)}';
+      aux += '${Numbers.getDoubleFormatado(element)}';
       return previousValue + element;
     });
 
@@ -44,22 +44,9 @@ abstract class _TextFieldSomaControllerBase with Store {
       controller.text = '';
       aux = '';
     } else {
-      controller.text = getNumberFormat(total);
+      controller.text = Numbers.getDoubleFormatado(total);
     }
 
     contaMontada = aux;
-  }
-
-  static String getNumberFormat(double value, {int fractionDigits = 2, String symbol = ''}) {
-    return FlutterMoneyFormatter(
-      amount: value,
-      settings: MoneyFormatterSettings(
-        symbol: symbol,
-        thousandSeparator: '.',
-        decimalSeparator: ',',
-        symbolAndNumberSeparator: ' ',
-        fractionDigits: fractionDigits,
-      ),
-    ).output.nonSymbol;
   }
 }

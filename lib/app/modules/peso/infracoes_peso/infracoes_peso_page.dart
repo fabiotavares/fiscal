@@ -31,7 +31,7 @@ class _InfracoesPesoPageState extends ModularState<InfracoesPesoPage, InfracoesP
         padding: EdgeInsets.symmetric(horizontal: 12.0),
         child: ListView.builder(
           itemCount: infracoes.length,
-          itemBuilder: (context, index) => infracoes[index].getInfracaoWidget(),
+          itemBuilder: (context, index) => infracoes[index].getInfracaoView(),
         ),
       ),
     );

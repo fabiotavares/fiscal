@@ -1,4 +1,5 @@
 import 'package:fiscal/app/model/veiculo_peso_model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -9,6 +10,12 @@ part 'configuracoes_controller.g.dart';
 class ConfiguracoesController = _ConfiguracoesControllerBase with _$ConfiguracoesController;
 
 abstract class _ConfiguracoesControllerBase with Store {
+  final scrollController = ScrollController();
+
+  @observable
+  bool scrollToTopVisible = false;
+  bool scrollToTopVisibleLock = false;
+
   @observable
   String filtroSelecionado = 'Todos';
 
@@ -23,7 +30,20 @@ abstract class _ConfiguracoesControllerBase with Store {
 
   @action
   Future<void> initPage() async {
+    scrollController.addListener(() {
+      if (!scrollToTopVisible) {
+        scrollToTopVisible = true;
+        hideScrollToTopVisible();
+      }
+    });
+
     buscarConfiguracoes();
+  }
+
+  void hideScrollToTopVisible() {
+    Future.delayed(Duration(seconds: 3)).then((_) {
+      scrollToTopVisible = false;
+    });
   }
 
   @action
