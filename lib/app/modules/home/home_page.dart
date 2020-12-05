@@ -1,9 +1,7 @@
-import 'package:fiscal/app/components/home_appbar.dart';
-import 'package:fiscal/app/components/theme_utils.dart';
+import 'package:fiscal/app/modules/home/components/home_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'home_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,9 +17,6 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context);
-    ThemeUtils.init(context);
-
     return Scaffold(
       drawer: Drawer(),
       backgroundColor: Colors.grey[200],
@@ -34,14 +29,16 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         child: ListView(
           children: [
             InkWell(
-              onTap: () => Modular.to.pushNamed('/peso'),
+              onTap: () async {
+                Modular.to.pushNamed('/home/peso');
+              },
               child: ListTile(
                 leading: Icon(
                   FontAwesome.balance_scale,
                   size: 30,
                 ),
-                title: Text('Fiscalização de Peso'),
-                subtitle: Text('Balança ou nota fiscal'),
+                title: Text('Excesso de Peso'),
+                subtitle: Text('Roteiro de fiscalização'),
               ),
             ),
           ],

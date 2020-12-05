@@ -1,5 +1,5 @@
-import 'package:fiscal/app/model/veiculo_peso_model.dart';
-import 'package:fiscal/app/components/text_field_soma/text_field_soma_controller.dart';
+import 'package:fiscal/app/models/veiculo_peso_model.dart';
+import 'package:fiscal/app/shared/components/text_field_soma/text_field_soma_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';

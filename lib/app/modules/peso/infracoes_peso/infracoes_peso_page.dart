@@ -1,4 +1,4 @@
-import 'package:fiscal/app/model/fiscalizacao_peso_model.dart';
+import 'package:fiscal/app/models/fiscalizacao_peso_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'infracoes_peso_controller.dart';

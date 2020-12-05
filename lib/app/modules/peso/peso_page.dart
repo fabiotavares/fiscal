@@ -1,9 +1,10 @@
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
-import 'package:fiscal/app/components/configuracao_peso_item.dart';
-import 'package:fiscal/app/components/sim_ou_nao_dialog.dart';
-import 'package:fiscal/app/components/text_field_soma/text_field_soma_widget.dart';
-import 'package:fiscal/app/model/veiculo_peso_model.dart';
-import 'package:fiscal/app/model/fiscalizacao_peso_model.dart';
+import 'package:fiscal/app/modules/peso/components/classificacao_item.dart';
+import 'package:fiscal/app/models/veiculo_peso_model.dart';
+import 'package:fiscal/app/models/fiscalizacao_peso_model.dart';
+import 'package:fiscal/app/shared/components/text_field_soma/text_field_soma_widget.dart';
+import 'package:fiscal/app/shared/components/yes_no_dialog.dart';
+import 'package:fiscal/app/shared/utils/numbers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -14,7 +15,7 @@ import 'peso_controller.dart';
 
 class PesoPage extends StatefulWidget {
   final String title;
-  const PesoPage({Key key, this.title = "Fiscalização de Peso"}) : super(key: key);
+  const PesoPage({Key key, this.title = "Excesso de Peso"}) : super(key: key);
 
   @override
   _PesoPageState createState() => _PesoPageState();
@@ -22,14 +23,14 @@ class PesoPage extends StatefulWidget {
 
 class _PesoPageState extends ModularState<PesoPage, PesoController> {
   //use 'controller' variable to access controller
-  final espacamento = 16.0;
+  // final espacamento = 16.0;
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         // confirma com o usuário de deseja descartar a fiscalização atual
-        var resposta = await SimOuNaoDialog.show(
+        var resposta = await YesNoDialog.show(
           context: context,
           msg: 'Deseja descartar a fiscalização atual e voltar pra tela inicial?',
         );
@@ -46,24 +47,22 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
                 onPressed: () {
                   final dados = validaDados();
                   if (dados != null) {
-                    Modular.to.pushNamed('/peso/infracoes_peso', arguments: dados);
+                    Modular.to.pushNamed('/home/peso/infracoes_peso', arguments: dados);
                   }
                 },
               )
             ],
           ),
-          body: Observer(builder: (_) {
-            return PageView(
-              controller: controller.pageController,
-              children: [
-                _veiculoPage(),
-                _notaFiscalPage(),
-                _balancaPage(),
-              ],
-              onPageChanged: controller.changeSelectedPage,
-              // physics: NeverScrollableScrollPhysics(),
-            );
-          }),
+          body: PageView(
+            controller: controller.pageController,
+            children: [
+              _veiculoPage(),
+              _notaFiscalPage(),
+              _balancaPage(),
+            ],
+            onPageChanged: controller.changeSelectedPage,
+            // physics: NeverScrollableScrollPhysics(),
+          ),
           bottomNavigationBar: FFNavigationBar(
             selectedIndex: controller.selectedTab,
             theme: FFNavigationBarTheme(
@@ -109,10 +108,10 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Configuração de eixos do veículo fiscalizado
+              // Classificação de eixos do veículo fiscalizado
               InkWell(
                 onTap: () async {
-                  var veiculoModel = await Modular.to.pushNamed('/peso/configuracoes') as VeiculoPesoModel;
+                  var veiculoModel = await Modular.to.pushNamed('/home/peso/configuracoes') as VeiculoPesoModel;
                   if (veiculoModel != null) {
                     controller.setVeiculoModel(veiculoModel);
                   }
@@ -123,7 +122,7 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0),
                     child: controller.veiculoModel != null
-                        ? ConfiguracaoPesoItem(veiculoModel: controller.veiculoModel, controller: controller)
+                        ? ClassificacaoItem(veiculoModel: controller.veiculoModel, controller: controller)
                         : Container(
                             width: double.infinity,
                             height: 100,
@@ -135,7 +134,7 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
                                   size: 30,
                                 ),
                                 SizedBox(height: 10),
-                                Text('Configuração de Eixos')
+                                Text('Classificação de Eixos')
                               ],
                             ),
                           ),
@@ -449,20 +448,13 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
     );
   }
 
-  String formatNumber(String number) {
-    // converte formato brasil para internacional
-    // removendo os pontos e trocando vírgula por ponto
-    return number.replaceAll('.', '').replaceAll(',', '.');
-  }
-
   FiscalizacaoPesoModel validaDados() {
     try {
       if (controller.veiculoModel == null) {
-        print('Erro: É necessário escolher uma configuração de eixos antes');
         Get.snackbar(
           'Erro',
           '',
-          messageText: Text('É necessário escolher uma configuração de eixos antes!'),
+          messageText: Text('É necessário escolher uma classificação de eixos antes!'),
           icon: Icon(Icons.error_outline, size: 30),
           duration: Duration(seconds: 5),
         );
@@ -472,9 +464,9 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
       FiscalizacaoPesoModel fiscalizacao = FiscalizacaoPesoModel(
         classificacao: controller.veiculoModel.id,
         pbtcLegal: controller.valuePesoPorComprimento * 1000,
-        pbtcTecnico: double.tryParse(formatNumber(controller.limiteTecnicoController.text)) ?? 0.0,
-        tara: double.tryParse(formatNumber(controller.taraController.text)) ?? 0.0,
-        cmt: double.tryParse(formatNumber(controller.cmtController.text)) ?? 0.0,
+        pbtcTecnico: double.tryParse(Numbers.getDoubleNaoFormatado(controller.limiteTecnicoController.text)) ?? 0.0,
+        tara: double.tryParse(Numbers.getDoubleNaoFormatado(controller.taraController.text)) ?? 0.0,
+        cmt: double.tryParse(Numbers.getDoubleNaoFormatado(controller.cmtController.text)) ?? 0.0,
         placas: controller.placasTracionadosController.text ?? '',
         tipoCarga: controller.tipoCargaController.text ?? '',
         opcaoNotaFiscal: controller.opcaoNotaFiscal == 0
@@ -483,8 +475,12 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
                 ? OpcaoNotaFiscal.varios_remetentes
                 : OpcaoNotaFiscal.unico_remetente,
         cnpj: controller.cnpjRemetenteController.text ?? '',
-        pesoDeclarado: controller.opcaoNotaFiscal == 0 ? 0.0 : double.tryParse(formatNumber(controller.pesoDeclaradoController.text)) ?? 0.0,
-        pesoAferido: controller.opcaoBalanca == 0 ? 0.0 : double.tryParse(formatNumber(controller.pesoAferidoController.text)) ?? 0.0,
+        pesoDeclarado: controller.opcaoNotaFiscal == 0
+            ? 0.0
+            : double.tryParse(Numbers.getDoubleNaoFormatado(controller.pesoDeclaradoController.text)) ?? 0.0,
+        pesoAferido: controller.opcaoBalanca == 0
+            ? 0.0
+            : double.tryParse(Numbers.getDoubleNaoFormatado(controller.pesoAferidoController.text)) ?? 0.0,
         afericaoInmetro: controller.inmetroController.text ?? '',
         afericaoValidade: controller.validadeAfericaoController.text ?? '',
         pbtcLabel: controller.veiculoModel.pbtc,

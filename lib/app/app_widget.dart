@@ -1,4 +1,4 @@
-import 'package:fiscal/app/utils/theme_fiscal.dart';
+import 'package:fiscal/app/core/theme_fiscal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:get/get.dart';
