@@ -1,7 +1,5 @@
 import 'package:fiscal/app/core/exceptions/fiscal_exceptions.dart';
 import 'package:fiscal/app/models/access_token_model.dart';
-import 'package:fiscal/app/repository/facebook_repository.dart';
-import 'package:fiscal/app/repository/security_storage_repository.dart';
 import 'package:fiscal/app/repository/shared_prefs_repository.dart';
 import 'package:fiscal/app/repository/usuario_repository.dart';
 import 'package:dio/dio.dart';
@@ -21,41 +19,16 @@ class UsuarioService {
   }) async {
     try {
       final prefs = await SharedPrefsRepository.instance;
-      final fireAuth = FirebaseAuth.instance;
-      AccessTokenModel accessTokenModel;
 
-      if (!facebookLogin) {
-        // login no backend
-        accessTokenModel = await _repository.login(email, senha: senha, facebookLogin: facebookLogin, avatar: '');
-        // login no firebase
-        await fireAuth.signInWithEmailAndPassword(email: email, password: senha);
-      } else {
-        // login no facebook
-        var facebookModel = await FacebookRepository().login();
-        if (facebookModel != null) {
-          // login no backend
-          accessTokenModel = await _repository.login(facebookModel.email,
-              senha: senha, facebookLogin: facebookLogin, avatar: facebookModel.picture);
-          // login no firebase
-          final facebookCredencial = FacebookAuthProvider.credential(facebookModel.token);
-          fireAuth.signInWithCredential(facebookCredencial);
-        } else {
-          throw AcessoNegadoException('Acesso Negado');
-        }
+      AccessTokenModel accessTokenModel = await _repository.login(email, senha: senha, facebookLogin: facebookLogin);
+
+      if (accessTokenModel == null) {
+        throw AcessoNegadoException('Acesso Negado');
       }
 
       // se chegou até aqui, login com sucesso...
-      // registrando o token
+      // registrando o token para uso nas requisições http
       prefs.registerAccessToken(accessTokenModel.accessToken);
-
-      // confirmando login (independente de ser pro facebook ou não)
-      final confirmModel = await _repository.confirmLogin();
-      prefs.registerAccessToken(confirmModel.accessToken);
-      SecurityStorageRepository().registerRefreshToken(confirmModel.refreshToken);
-
-      // salvar dados do usuário
-      final dadosUsuario = await _repository.recuperaDadosUsuarioLogado();
-      await prefs.registerUserData(dadosUsuario);
 
       //
     } on PlatformException catch (e) {
@@ -83,9 +56,13 @@ class UsuarioService {
   }
 
   Future<void> cadastrarUsuario(String email, String senha) async {
-    await _repository.cadastrarUsuario(email, senha);
     // cadastrar no firebase
     var fireAuth = FirebaseAuth.instance;
     await fireAuth.createUserWithEmailAndPassword(email: email, password: senha);
+  }
+
+  Future<void> logout() async {
+    // cadastrar no firebase
+    await _repository.logout();
   }
 }

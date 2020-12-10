@@ -8,7 +8,7 @@ import 'package:synchronized/synchronized.dart';
 //singleton
 class Connection {
   static const VERSION = 1;
-  static const DATABASE_NAME = 'cuidapet_fabreder_db';
+  static const DATABASE_NAME = 'fiscal_db';
 
   Database _db;
   // estratégia para evitar concorrência

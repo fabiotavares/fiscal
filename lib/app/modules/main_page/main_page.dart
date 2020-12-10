@@ -1,3 +1,4 @@
+import 'package:fiscal/app/shared/auth_store.dart';
 import 'package:fiscal/app/shared/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -15,21 +16,21 @@ class _MainPageState extends State<MainPage> {
 
     // necessário estar numa StatefulWidget para esse método funcionar bem
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      //temp todo:
-      Modular.to.pushNamedAndRemoveUntil('/home', (_) => false);
+      // só roda depois que a página é construída
 
-      // // só roda depois que a página é construída
-      // final authStore = Modular.get<AuthStore>();
-      // final isLogged = await authStore.isLogged();
-      // if (isLogged) {
-      //   // obtém dados do usuário logado
-      //   authStore.loadUsuario();
-      //   // serve pra matar esta página e tudo que tinha antes
-      //   Modular.to.pushNamedAndRemoveUntil('/home', (_) => false);
-      // } else {
-      //   // serve pra matar esta página e tudo que tinha antes
-      //   Modular.to.pushNamedAndRemoveUntil('/login', (_) => false);
-      // }
+      await Future.delayed(Duration(seconds: 2));
+
+      final authStore = Modular.get<AuthStore>();
+      final isLogged = await authStore.isLogged();
+      if (isLogged) {
+        // obtém dados do usuário logado
+        authStore.loadUsuario();
+        // serve pra matar esta página e tudo que tinha antes
+        Modular.to.pushNamedAndRemoveUntil('/home', (_) => false);
+      } else {
+        // serve pra matar esta página e tudo que tinha antes
+        Modular.to.pushNamedAndRemoveUntil('/login', (_) => false);
+      }
     });
   }
 
@@ -40,9 +41,12 @@ class _MainPageState extends State<MainPage> {
     ThemeUtils.init(context);
 
     return Scaffold(
+      backgroundColor: ThemeUtils.primaryColor,
       body: Center(
-        child: Container(
-          child: Image.asset('lib/assets/images/logo.png'), //todo: arrumar o logo do petô (com tamanhos diferentes)
+        child: Image.asset(
+          'lib/assets/images/logo.png',
+          width: 150,
+          height: 150,
         ),
       ),
     );

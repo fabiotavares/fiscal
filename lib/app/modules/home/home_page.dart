@@ -1,4 +1,6 @@
 import 'package:fiscal/app/modules/home/components/home_appbar.dart';
+import 'package:fiscal/app/repository/auto_repository.dart';
+import 'package:fiscal/app/services/usuario_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -18,7 +20,22 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: Container(
+          margin: EdgeInsets.only(top: 100),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FlatButton(
+                child: Text('Logout'),
+                onPressed: () async {
+                  await Modular.get<UsuarioService>().logout();
+                },
+              )
+            ],
+          ),
+        ),
+      ),
       backgroundColor: Colors.grey[200],
       appBar: HomeAppBar(null),
       // appBar: AppBar(
@@ -40,6 +57,12 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                 title: Text('Excesso de Peso'),
                 subtitle: Text('Roteiro de fiscalização'),
               ),
+            ),
+            FlatButton(
+              onPressed: () {
+                AutoRepository().buscarAutosUsuario();
+              },
+              child: Text('Bucar gravidade...'),
             ),
           ],
         ),

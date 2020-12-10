@@ -1,4 +1,4 @@
-class VeiculoPesoModel {
+class ClassificacaoEixosModel {
   final String id;
   final String tipo;
   final String limiteEixos;
@@ -10,7 +10,7 @@ class VeiculoPesoModel {
   final bool precisaAet;
   final String obs;
 
-  VeiculoPesoModel({
+  ClassificacaoEixosModel({
     this.id,
     this.tipo,
     this.limiteEixos,

@@ -1,48 +1,58 @@
-import 'dart:io';
-
-import 'package:fiscal/app/core/dio/custom_dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fiscal/app/core/exceptions/fiscal_exceptions.dart';
 import 'package:fiscal/app/models/access_token_model.dart';
-import 'package:fiscal/app/models/confirm_login_model.dart';
 import 'package:fiscal/app/models/usuario_model.dart';
+import 'package:fiscal/app/repository/facebook_repository.dart';
 import 'package:fiscal/app/repository/shared_prefs_repository.dart';
 
 class UsuarioRepository {
-  Future<AccessTokenModel> login(String email, {String senha, bool facebookLogin = false, String avatar = ''}) {
-    // login pelo facebook já implica em um cadastro automático
-    // o avatar será a imagem do usuário, que pode vir do facebook
+  Future<AccessTokenModel> login(String email, {String senha, bool facebookLogin = false, String avatar = ''}) async {
+    // fazendo login no Firebase
+    final fireAuth = FirebaseAuth.instance;
+    AccessTokenModel accessTokenModel;
+    UsuarioModel usuarioModel;
 
-    // usando instance pois é apenas o login, onde obterei o token
-    // apenas '/login' pois CustomDio já encapsula a base_url
-
-    // fazendo login no backend
-    return CustomDio.instance.post('/login', data: {
-      'login': email,
-      'senha': senha,
-      'facebookLogin': facebookLogin,
-      'avatar': avatar,
-    }).then((res) => AccessTokenModel.fromJson(res.data));
-  }
-
-  // confirmando login
-  Future<ConfirmLoginModel> confirmLogin() async {
+    if (!facebookLogin) {
+      // login com email e senha no firebase
+      var res = await fireAuth.signInWithEmailAndPassword(email: email, password: senha);
+      // criando dados do usuário para salvar depois
+      accessTokenModel = AccessTokenModel(await res.user.getIdToken());
+      usuarioModel = UsuarioModel(email: email);
+      //
+    } else {
+      // login através do facebook
+      var facebookModel = await FacebookRepository().login();
+      if (facebookModel != null) {
+        // login no firebase
+        final facebookCredencial = FacebookAuthProvider.credential(facebookModel.token);
+        var res = await fireAuth.signInWithCredential(facebookCredencial);
+        accessTokenModel = AccessTokenModel(await res.user.getIdToken());
+        // criando dados do usuário para salvar depois
+        usuarioModel = UsuarioModel(email: facebookModel.email, imgAvatar: facebookModel.picture);
+        //
+      } else {
+        throw AcessoNegadoException('Acesso Negado');
+      }
+    }
+    // salva dados do usuário logado
     final prefs = await SharedPrefsRepository.instance;
-    final deviceId = prefs.deviceId;
+    await prefs.registerUserData(usuarioModel);
 
-    // uso de 'patch' pois vai alterar um dado
-    return CustomDio.authInstance.patch('/login/confirmar', data: {
-      'ios_token': Platform.isIOS ? deviceId : null,
-      'android_token': Platform.isAndroid ? deviceId : null,
-    }).then((res) => ConfirmLoginModel.fromJson(res.data));
+    return accessTokenModel;
   }
 
-  Future<UsuarioModel> recuperaDadosUsuarioLogado() {
-    return CustomDio.authInstance.get('/usuario').then((res) => UsuarioModel.fromJson(res.data));
+  Future<UsuarioModel> recuperaDadosUsuarioLogado() async {
+    final prefs = await SharedPrefsRepository.instance;
+    return prefs.userData;
   }
 
-  Future<void> cadastrarUsuario(String email, String senha) async {
-    await CustomDio.instance.post('/login/cadastrar', data: {
-      'email': email,
-      'senha': senha,
-    });
+  Future<void> logout() async {
+    // desloga do Firebase se estiver ativo
+    final fireAuth = FirebaseAuth.instance;
+    fireAuth?.signOut();
+
+    // limpa dados internos e volta para tela de login
+    final prefs = await SharedPrefsRepository.instance;
+    prefs.logout();
   }
 }

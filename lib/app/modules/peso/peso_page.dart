@@ -1,6 +1,7 @@
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
+import 'package:fiscal/app/models/auto_model.dart';
 import 'package:fiscal/app/modules/peso/components/classificacao_item.dart';
-import 'package:fiscal/app/models/veiculo_peso_model.dart';
+import 'package:fiscal/app/models/classificacao_eixos_model.dart';
 import 'package:fiscal/app/models/fiscalizacao_peso_model.dart';
 import 'package:fiscal/app/shared/components/text_field_soma/text_field_soma_widget.dart';
 import 'package:fiscal/app/shared/components/yes_no_dialog.dart';
@@ -47,7 +48,7 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
                 onPressed: () {
                   final dados = validaDados();
                   if (dados != null) {
-                    Modular.to.pushNamed('/home/peso/infracoes_peso', arguments: dados);
+                    Modular.to.pushNamed('/home/peso/fiscalizacao', arguments: dados);
                   }
                 },
               )
@@ -111,7 +112,7 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
               // Classificação de eixos do veículo fiscalizado
               InkWell(
                 onTap: () async {
-                  var veiculoModel = await Modular.to.pushNamed('/home/peso/configuracoes') as VeiculoPesoModel;
+                  var veiculoModel = await Modular.to.pushNamed('/home/peso/configuracoes') as ClassificacaoEixosModel;
                   if (veiculoModel != null) {
                     controller.setVeiculoModel(veiculoModel);
                   }

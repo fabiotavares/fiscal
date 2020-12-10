@@ -10,13 +10,13 @@ Future<void> main() async {
   // método que força a inicialização do contexto antes do do runApp
   WidgetsFlutterBinding.ensureInitialized();
   // inicializando o firebase
-  //await Firebase.initializeApp();
+  await Firebase.initializeApp();
   // forçando orientação retrato para o app como única opção
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // carregando variáveis de ambiente
   await loadEnv();
   // obtendo o device id e armazenando no SharedPreferences
-  //PushMessageConfigure().configure();
+  PushMessageConfigure().configure();
 
   runApp(ModularApp(module: AppModule()));
 }

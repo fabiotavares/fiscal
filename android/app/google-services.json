@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "775168745927",
+    "firebase_url": "https://fiscal-de-transito-default-rtdb.firebaseio.com",
+    "project_id": "fiscal-de-transito",
+    "storage_bucket": "fiscal-de-transito.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775168745927:android:8fe1d7f105ab1a4c3279e2",
+        "android_client_info": {
+          "package_name": "com.fabreder.fiscal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "775168745927-ilrduvehgtga95etd2olk63ttsffhvaq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fabreder.fiscal",
+            "certificate_hash": "5e2307c93f3287d568e4bd13af6fc5934009d906"
+          }
+        },
+        {
+          "client_id": "775168745927-tc63114krdu0lcff0b8kda6p3knts27u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS9J5-GXsGt40rD0T9kDOJLEyKZhvVMr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "775168745927-tc63114krdu0lcff0b8kda6p3knts27u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

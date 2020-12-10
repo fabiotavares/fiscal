@@ -41,5 +41,60 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
+	<!-- Google Sign-in Section -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<!-- TODO Replace this value: -->
+				<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+				<string>com.googleusercontent.apps.775168745927-6bebshhqi8sk8qes4bqjc7l6lb4m0pm0</string>
+			</array>
+		</dict>
+	</array>
+	<!-- End of the Google Sign-in Section -->
+
+	<!-- Código copiado devido ao plugin do Facebook (também no strings.xml) -->
+    <!-- fonte: https://pub.dev/packages/flutter_facebook_login#-installing-tab- -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<!--
+		<dict>
+		... Some other CFBundleURLTypes definition.
+		</dict>
+		-->
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<!--
+				Replace "000000000000" with your Facebook App ID here.
+				**NOTE**: The scheme needs to start with `fb` and then your ID.
+				-->
+				<string>fb1007942096384101</string>
+			</array>
+		</dict>
+	</array>
+
+	<key>FacebookAppID</key>
+
+	<!-- Replace "000000000000" with your Facebook App ID here. -->
+	<string>1007942096384101</string>
+	<key>FacebookDisplayName</key>
+
+	<!-- Replace "YOUR_APP_NAME" with your Facebook App name. -->
+	<string>Fiscal de Transito</string>
+
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	<!-- até aqui -->
 </dict>
 </plist>

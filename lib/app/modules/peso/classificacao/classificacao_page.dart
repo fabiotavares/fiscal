@@ -1,5 +1,5 @@
 import 'package:fiscal/app/modules/peso/components/classificacao_item.dart';
-import 'package:fiscal/app/models/veiculo_peso_model.dart';
+import 'package:fiscal/app/models/classificacao_eixos_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -64,7 +64,7 @@ class _ClassificacaoPageState extends ModularState<ClassificacaoPage, Classifica
       }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Observer(builder: (_) {
-        return FutureBuilder<List<VeiculoPesoModel>>(
+        return FutureBuilder<List<ClassificacaoEixosModel>>(
           future: controller.configuracoesFuture,
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {

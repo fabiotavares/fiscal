@@ -1,4 +1,4 @@
-import 'package:fiscal/app/models/veiculo_peso_model.dart';
+import 'package:fiscal/app/models/classificacao_eixos_model.dart';
 import 'package:fiscal/app/shared/components/text_field_soma/text_field_soma_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -29,7 +29,7 @@ abstract class _PesoControllerBase with Store {
   TextFieldSomaController pesoAferidoSomaController = TextFieldSomaController();
 
   @observable
-  VeiculoPesoModel veiculoModel;
+  ClassificacaoEixosModel veiculoModel;
 
   @observable
   double valuePesoPorComprimento = 0.0;
@@ -50,7 +50,7 @@ abstract class _PesoControllerBase with Store {
   int selectedTab = 0;
 
   @action
-  void setVeiculoModel(VeiculoPesoModel value) {
+  void setVeiculoModel(ClassificacaoEixosModel value) {
     veiculoModel = value;
     changePesoPorComprimento(0);
   }

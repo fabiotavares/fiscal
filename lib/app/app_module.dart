@@ -1,5 +1,7 @@
 import 'package:fiscal/app/modules/login/login_module.dart';
 import 'package:fiscal/app/modules/main_page/main_page.dart';
+import 'package:fiscal/app/repository/usuario_repository.dart';
+import 'package:fiscal/app/services/usuario_service.dart';
 import 'package:fiscal/app/shared/auth_store.dart';
 
 import 'app_controller.dart';
@@ -14,6 +16,8 @@ class AppModule extends MainModule {
         $AppController,
         // autenticação
         Bind((i) => AuthStore()),
+        Bind((i) => UsuarioRepository()),
+        Bind((i) => UsuarioService(i.get())),
       ];
 
   @override

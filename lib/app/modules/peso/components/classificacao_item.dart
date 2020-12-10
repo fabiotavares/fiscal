@@ -1,4 +1,4 @@
-import 'package:fiscal/app/models/veiculo_peso_model.dart';
+import 'package:fiscal/app/models/classificacao_eixos_model.dart';
 import 'package:fiscal/app/shared/theme_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +7,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ClassificacaoItem extends StatelessWidget {
   // controller pode ser nulo, indicando exibição apenas para leitura
-  final VeiculoPesoModel veiculoModel;
+  final ClassificacaoEixosModel veiculoModel;
   final PesoController controller;
 
   const ClassificacaoItem({
@@ -56,9 +56,9 @@ class ClassificacaoItem extends StatelessWidget {
             // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Column(
               children: [
-                Image.asset('assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}a.png'),
+                Image.asset('lib/assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}a.png'),
                 SizedBox(height: 5),
-                Image.asset('assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}b.png'),
+                Image.asset('lib/assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}b.png'),
               ],
             ),
           ),

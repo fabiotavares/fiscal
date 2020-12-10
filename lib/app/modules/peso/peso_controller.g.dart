@@ -22,13 +22,13 @@ mixin _$PesoController on _PesoControllerBase, Store {
   final _$veiculoModelAtom = Atom(name: '_PesoControllerBase.veiculoModel');
 
   @override
-  VeiculoPesoModel get veiculoModel {
+  ClassificacaoEixosModel get veiculoModel {
     _$veiculoModelAtom.reportRead();
     return super.veiculoModel;
   }
 
   @override
-  set veiculoModel(VeiculoPesoModel value) {
+  set veiculoModel(ClassificacaoEixosModel value) {
     _$veiculoModelAtom.reportWrite(value, super.veiculoModel, () {
       super.veiculoModel = value;
     });
@@ -133,7 +133,7 @@ mixin _$PesoController on _PesoControllerBase, Store {
       ActionController(name: '_PesoControllerBase');
 
   @override
-  void setVeiculoModel(VeiculoPesoModel value) {
+  void setVeiculoModel(ClassificacaoEixosModel value) {
     final _$actionInfo = _$_PesoControllerBaseActionController.startAction(
         name: '_PesoControllerBase.setVeiculoModel');
     try {

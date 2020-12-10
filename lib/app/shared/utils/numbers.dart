@@ -7,7 +7,7 @@ enum SymbolPosition {
 }
 
 class Numbers {
-  static final _numFormatBr = NumberFormat(",###.00#", "pt_BR");
+  static final _numFormatBr = NumberFormat(",##0.00#", "pt_BR");
 
   static String getDoubleFormatado(double value) {
     return _numFormatBr.format(value);

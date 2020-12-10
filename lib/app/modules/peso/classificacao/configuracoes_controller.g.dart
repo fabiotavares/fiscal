@@ -52,13 +52,13 @@ mixin _$ConfiguracoesController on _ConfiguracoesControllerBase, Store {
   final _$configuracoesFutureAtom = Atom(name: '_ConfiguracoesControllerBase.configuracoesFuture');
 
   @override
-  ObservableFuture<List<VeiculoPesoModel>> get configuracoesFuture {
+  ObservableFuture<List<ClassificacaoEixosModel>> get configuracoesFuture {
     _$configuracoesFutureAtom.reportRead();
     return super.configuracoesFuture;
   }
 
   @override
-  set configuracoesFuture(ObservableFuture<List<VeiculoPesoModel>> value) {
+  set configuracoesFuture(ObservableFuture<List<ClassificacaoEixosModel>> value) {
     _$configuracoesFutureAtom.reportWrite(value, super.configuracoesFuture, () {
       super.configuracoesFuture = value;
     });
