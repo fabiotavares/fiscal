@@ -45,7 +45,12 @@ class TextWithCopyButton extends StatelessWidget {
                 onTap: () {
                   Clipboard.setData(ClipboardData(text: toCopy));
 
-                  Get.snackbar('Sucesso', 'Copiado para a área de transferência');
+                  Get.snackbar(
+                    'Sucesso',
+                    'Copiado para a área de transferência',
+                    barBlur: 50,
+                    backgroundGradient: LinearGradient(colors: [Colors.white, Colors.white]),
+                  );
                 },
                 child: Icon(Icons.copy, size: 22),
               ),

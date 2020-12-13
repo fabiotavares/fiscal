@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 
-class AcessoNegadoException extends DioError {
+class AcessoNegadoDioException extends DioError {
   String mensagem;
 
-  AcessoNegadoException(this.mensagem, {DioError exception})
+  AcessoNegadoDioException(this.mensagem, {DioError exception})
       : super(
           request: exception.request,
           response: exception.response,

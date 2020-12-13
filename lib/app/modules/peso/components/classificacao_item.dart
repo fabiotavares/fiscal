@@ -56,9 +56,9 @@ class ClassificacaoItem extends StatelessWidget {
             // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Column(
               children: [
-                Image.asset('lib/assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}a.png'),
+                Image.asset('lib/assets/images/eixos/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}a.png'),
                 SizedBox(height: 5),
-                Image.asset('lib/assets/images/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}b.png'),
+                Image.asset('lib/assets/images/eixos/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}b.png'),
               ],
             ),
           ),

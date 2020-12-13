@@ -32,6 +32,7 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
       onWillPop: () async {
         // confirma com o usuário de deseja descartar a fiscalização atual
         var resposta = await YesNoDialog.show(
+          title: 'Atenção',
           context: context,
           msg: 'Deseja descartar a fiscalização atual e voltar pra tela inicial?',
         );
@@ -458,6 +459,8 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
           messageText: Text('É necessário escolher uma classificação de eixos antes!'),
           icon: Icon(Icons.error_outline, size: 30),
           duration: Duration(seconds: 5),
+          barBlur: 50,
+          backgroundGradient: LinearGradient(colors: [Colors.white, Colors.white]),
         );
         return null;
       }
@@ -495,6 +498,8 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
           messageText: Text('Nenhum peso foi informado!'),
           icon: Icon(Icons.error_outline, size: 30),
           duration: Duration(seconds: 5),
+          barBlur: 50,
+          backgroundGradient: LinearGradient(colors: [Colors.white, Colors.white]),
         );
         return null;
       }
@@ -507,6 +512,8 @@ class _PesoPageState extends ModularState<PesoPage, PesoController> {
           messageText: Text('É necessário informar a tara  do veículo na fiscalização por nota fiscal!'),
           icon: Icon(Icons.error_outline, size: 30),
           duration: Duration(seconds: 5),
+          barBlur: 50,
+          backgroundGradient: LinearGradient(colors: [Colors.white, Colors.white]),
         );
         return null;
       }

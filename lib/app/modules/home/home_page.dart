@@ -1,6 +1,6 @@
 import 'package:fiscal/app/modules/home/components/home_appbar.dart';
-import 'package:fiscal/app/repository/auto_repository.dart';
-import 'package:fiscal/app/services/usuario_service.dart';
+import 'package:fiscal/app/modules/home/components/home_drawer.dart';
+import 'package:fiscal/app/shared/auth_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -18,24 +18,25 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
   //use 'controller' variable to access controller
 
   @override
+  void initState() {
+    super.initState();
+
+    // // definindo um ouvinte para o estado de autenticação do usuário
+    // FirebaseAuth.instance.authStateChanges().listen((user) async {
+    //   if (user == null && controller.logoutInterno == null) {
+    //     // limpa dados internos e volta para tela de login
+    //     final prefs = await SharedPrefsRepository.instance;
+    //     prefs.logout();
+    //   } else {
+    //     controller.logoutInterno = null;
+    //   }
+    // });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: Container(
-          margin: EdgeInsets.only(top: 100),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FlatButton(
-                child: Text('Logout'),
-                onPressed: () async {
-                  await Modular.get<UsuarioService>().logout();
-                },
-              )
-            ],
-          ),
-        ),
-      ),
+      drawer: HomeDrawer(),
       backgroundColor: Colors.grey[200],
       appBar: HomeAppBar(null),
       // appBar: AppBar(
@@ -59,10 +60,19 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
               ),
             ),
             FlatButton(
-              onPressed: () {
-                AutoRepository().buscarAutosUsuario();
+              onPressed: () async {
+                final user = Modular.get<AuthStore>().usuarioLogado;
+                print('Token usuário logado: ${user.token}');
+                final facebook = await Modular.get<AuthStore>().isProviderFacebook();
+                if (facebook != null) {
+                  if (facebook) {
+                    print('Usuário logado pelo facebook');
+                  } else {
+                    print('Usuário NÃO logado pelo facebook');
+                  }
+                }
               },
-              child: Text('Bucar gravidade...'),
+              child: Text('Teste...'),
             ),
           ],
         ),

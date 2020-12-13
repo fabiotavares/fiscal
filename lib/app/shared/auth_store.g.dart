@@ -31,11 +31,43 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     return _$loadUsuarioAsyncAction.run(() => super.loadUsuario());
   }
 
+  final _$testeAsyncAction = AsyncAction('_AuthStoreBase.teste');
+
+  @override
+  Future<void> teste() {
+    return _$testeAsyncAction.run(() => super.teste());
+  }
+
   final _$isLoggedAsyncAction = AsyncAction('_AuthStoreBase.isLogged');
 
   @override
   Future<bool> isLogged() {
     return _$isLoggedAsyncAction.run(() => super.isLogged());
+  }
+
+  final _$isProviderFacebookAsyncAction =
+      AsyncAction('_AuthStoreBase.isProviderFacebook');
+
+  @override
+  Future<bool> isProviderFacebook() {
+    return _$isProviderFacebookAsyncAction
+        .run(() => super.isProviderFacebook());
+  }
+
+  final _$isProviderPasswordAsyncAction =
+      AsyncAction('_AuthStoreBase.isProviderPassword');
+
+  @override
+  Future<bool> isProviderPassword() {
+    return _$isProviderPasswordAsyncAction
+        .run(() => super.isProviderPassword());
+  }
+
+  final _$logoutAsyncAction = AsyncAction('_AuthStoreBase.logout');
+
+  @override
+  Future<void> logout() {
+    return _$logoutAsyncAction.run(() => super.logout());
   }
 
   @override

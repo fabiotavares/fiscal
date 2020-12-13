@@ -51,7 +51,12 @@ abstract class _ConfiguracoesControllerBase with Store {
     try {
       configuracoesFuture = ObservableFuture(_criarListaConfiguracoes());
     } catch (e) {
-      Get.snackbar('Erro', 'Erro ao buscar as configurações de veículos');
+      Get.snackbar(
+        'Erro',
+        'Erro ao buscar as configurações de veículos',
+        barBlur: 50,
+        backgroundGradient: LinearGradient(colors: [Colors.white, Colors.white]),
+      );
     }
   }
 

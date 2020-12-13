@@ -1,28 +1,31 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fiscal/app/shared/components/info_dialog.dart';
 import 'package:fiscal/app/shared/theme_utils.dart';
 import 'package:fiscal/app/shared/utils/validador.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'login_controller.dart';
+import 'cadastro_controller.dart';
 
-class LoginPage extends StatefulWidget {
+class CadastroPage extends StatefulWidget {
   final String title;
-  const LoginPage({Key key, this.title = "Login"}) : super(key: key);
+  const CadastroPage({Key key, this.title = "Cadastrar Usuário"}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _CadastroPageState createState() => _CadastroPageState();
 }
 
-class _LoginPageState extends ModularState<LoginPage, LoginController> {
+class _CadastroPageState extends ModularState<CadastroPage, CadastroController> {
   //use 'controller' variable to access controller
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeUtils.accentColor,
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      //   // backgroundColor: ThemeUtils.primaryColor,
+      //   elevation: 0,
+      // ),
+      // backgroundColor: ThemeUtils.primaryColor,
       body: SingleChildScrollView(
         child: Container(
           width: ScreenUtil().screenWidth,
@@ -34,7 +37,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 margin: const EdgeInsets.only(top: 100.0, bottom: 30.0),
@@ -50,9 +53,8 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                     child: Container(
                       child: Container(
                         width: ScreenUtil().screenWidth * .9,
-                        // height: 240,
                         margin: const EdgeInsets.only(top: 60),
-                        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 50.0, bottom: 20.0),
+                        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 50.0, bottom: 25.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12.0),
@@ -130,37 +132,38 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                                       return null;
                                     },
                                   ),
-                                  SizedBox(height: 10),
-                                  InkWell(
-                                    child: Text(
-                                      'Esqueci a senha',
-                                      style: TextStyle(color: ThemeUtils.primaryColorDark),
+                                  SizedBox(height: 20),
+                                  TextFormField(
+                                    controller: controller.confirmaSenhaController,
+                                    obscureText: controller.ocultaSenha,
+                                    decoration: InputDecoration(
+                                      // fillColor e filled precisam ser configurados em conjunto
+                                      fillColor: Colors.grey[200],
+                                      filled: true,
+                                      labelText: 'Confirma Senha',
+                                      labelStyle: TextStyle(fontSize: 15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12.0),
+                                        borderSide: BorderSide(color: Colors.grey[200]),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12.0),
+                                        borderSide: BorderSide(color: Colors.grey[200]),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12.0),
+                                        borderSide: BorderSide(color: Colors.grey[200]),
+                                      ),
                                     ),
-                                    onTap: () {
-                                      // envia email para redefinição de senha
-                                      final email = controller.loginController.text;
-                                      if (email.trim().isNotEmpty && Validador.validEmail(email)) {
-                                        try {
-                                          // envia email para resetar senha
-                                          FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-                                          // informa sobre as cosnequências de alterar senha de login via facebool
-                                          InfoDialog.show(
-                                            context: context,
-                                            title: 'Atenção',
-                                            msg: '1) Se você fez login antes pelo facebook e trocar sua senha aqui, ' +
-                                                'será preciso fornecer email e senha em cada novo login. Se quiser manter ' +
-                                                'o login atual, faça a recuperação da senha no facebook;\n\n ' +
-                                                '2) Em instantes você receberá no email cadastrado informações para ' +
-                                                'alterar sua senha. Caso desista, basta ignorar a mensagem.',
-                                          );
-                                        } catch (e) {}
-                                      } else {
-                                        InfoDialog.show(
-                                          context: context,
-                                          title: 'Atenção',
-                                          msg: 'Informe um email válido.',
-                                        );
+                                    validator: (value) {
+                                      if (value.trim().isEmpty) {
+                                        return 'Confirma Senha obrigatória';
+                                      } else if (value.length < 6) {
+                                        return 'Confirma Senha precisa ter pelo menos 6 caracteres';
+                                      } else if (value != controller.senhaController.text) {
+                                        return 'Senha e Confirma Senha não são iguais';
                                       }
+                                      return null;
                                     },
                                   ),
                                 ],
@@ -195,7 +198,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                   color: ThemeUtils.primaryColorDark,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
                   child: Text(
-                    'Entrar',
+                    'Cadastrar',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -203,26 +206,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                     ),
                     textScaleFactor: ScreenUtil().scaleText,
                   ),
-                  onPressed: controller.login,
-                ),
-              ),
-              SizedBox(height: 10),
-              Container(
-                width: ScreenUtil().screenWidth * .9,
-                height: 45.0,
-                child: FlatButton(
-                  color: Color(0xFF4267B2),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                  child: Text(
-                    'Entrar com Facebook',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 45,
-                    ),
-                    textScaleFactor: ScreenUtil().scaleText,
-                  ),
-                  onPressed: controller.facebookLogin,
+                  onPressed: controller.cadastrarUsuario,
                 ),
               ),
               Expanded(child: SizedBox(height: 10)),
@@ -234,7 +218,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   child: Text(
-                    'Cadastrar',
+                    'Voltar',
                     style: TextStyle(
                       color: ThemeUtils.primaryColorDark,
                       fontWeight: FontWeight.bold,
@@ -242,7 +226,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                     ),
                     textScaleFactor: ScreenUtil().scaleText,
                   ),
-                  onPressed: () => Modular.to.pushNamed('/login/cadastro'),
+                  onPressed: () => Modular.to.pop(),
                 ),
               ),
               SizedBox(height: 15),
@@ -253,25 +237,3 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
     );
   }
 }
-
-// class CustomClipPath extends CustomClipper<Path> {
-//   @override
-//   Path getClip(Size size) {
-//     final path = Path();
-//     path.moveTo(0, size.height * 0.14);
-//     path.quadraticBezierTo(size.width * 0.4, size.height * 0.14, size.width * 0.35, size.height * 0.14);
-//     path.quadraticBezierTo(size.width * 0.5, size.height * 0.4, size.width * 0.65, size.height * 0.14);
-//     path.lineTo(size.width, size.height * 0.14);
-//     path.lineTo(size.width, size.height);
-//     path.lineTo(0, size.height);
-//     path.lineTo(0, size.height * 0.14);
-//     path.close();
-
-//     return path;
-//   }
-
-//   @override
-//   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-//     return true;
-//   }
-// }

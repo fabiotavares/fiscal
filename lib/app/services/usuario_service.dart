@@ -1,5 +1,6 @@
-import 'package:fiscal/app/core/exceptions/fiscal_exceptions.dart';
-import 'package:fiscal/app/models/access_token_model.dart';
+import 'package:fiscal/app/core/exceptions/acesso_negado_dio_exceptions.dart';
+import 'package:fiscal/app/core/exceptions/acesso_negado_firebase_exceptions.dart';
+import 'package:fiscal/app/models/usuario_model.dart';
 import 'package:fiscal/app/repository/shared_prefs_repository.dart';
 import 'package:fiscal/app/repository/usuario_repository.dart';
 import 'package:dio/dio.dart';
@@ -18,18 +19,18 @@ class UsuarioService {
     String senha,
   }) async {
     try {
-      final prefs = await SharedPrefsRepository.instance;
+      UsuarioModel user = await _repository.login(email, senha: senha, facebookLogin: facebookLogin);
 
-      AccessTokenModel accessTokenModel = await _repository.login(email, senha: senha, facebookLogin: facebookLogin);
-
-      if (accessTokenModel == null) {
-        throw AcessoNegadoException('Acesso Negado');
+      if (user.token == null) {
+        throw AcessoNegadoFirebaseException('Acesso Negado');
       }
 
-      // se chegou até aqui, login com sucesso...
-      // registrando o token para uso nas requisições http
-      prefs.registerAccessToken(accessTokenModel.accessToken);
+      // verifica necessidade de cadastrar no banco de dados (Firestore)
+      // await _repository.cadastrarUsuarioBanco(user);
 
+      // salva dados do usuário logado localmente
+      final prefs = await SharedPrefsRepository.instance;
+      await prefs.registerUserData(user);
       //
     } on PlatformException catch (e) {
       // erro específico do firebase
@@ -42,11 +43,14 @@ class UsuarioService {
       print('erro #02');
       if (e.response.statusCode == 403) {
         // envia exceção customizada
-        throw AcessoNegadoException(e.response.data['message'], exception: e);
+        throw AcessoNegadoDioException(e.response.data['message'], exception: e);
       } else {
         print('erro #03');
         rethrow;
       }
+    } on FirebaseAuthException catch (e) {
+      print('*** Erro Login Firebase: ${e.code}');
+      throw AcessoNegadoFirebaseException(e.code);
     } catch (e) {
       // repassando a excessão, pois é a controller que informará na tela
       print('Erro ao fazer login $e');
@@ -56,13 +60,33 @@ class UsuarioService {
   }
 
   Future<void> cadastrarUsuario(String email, String senha) async {
-    // cadastrar no firebase
-    var fireAuth = FirebaseAuth.instance;
-    await fireAuth.createUserWithEmailAndPassword(email: email, password: senha);
+    try {
+      // cadastra usuário no fire auth
+      final user = await _repository.cadastrarUsuarioFireAuth(email: email, senha: senha);
+      // cadastrar usuário no firebase store e salva localmente
+      // await _repository.cadastrarUsuarioBanco(user);
+      await _repository.salvaUsuarioLocal(user);
+      //
+    } catch (e) {
+      print('Erro ao cadastrar usuário: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> salvaUsuarioLocal(UsuarioModel user) async {
+    await _repository.salvaUsuarioLocal(user);
+  }
+
+  Future<UsuarioModel> recuperaDadosUsuarioLogado() async {
+    final prefs = await SharedPrefsRepository.instance;
+    return prefs.userData;
   }
 
   Future<void> logout() async {
-    // cadastrar no firebase
-    await _repository.logout();
+    // desloga do FireAuth
+    await _repository.logoutFireAuth();
+    // limpa dados internos e volta para tela de login
+    final prefs = await SharedPrefsRepository.instance;
+    prefs.logout();
   }
 }

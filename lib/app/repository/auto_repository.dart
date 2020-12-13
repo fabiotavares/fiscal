@@ -3,17 +3,22 @@ import 'package:fiscal/app/models/auto_model.dart';
 import 'package:fiscal/app/models/sugestao_model.dart';
 
 class AutoRepository {
-  Future<List<AutoModel>> buscarAutosUsuario() async {
-    final usuario = 'usuario_id'; // temp
-
-    // buscar coleção de autos do usuário no Firebase
-    final autos = await FirebaseFirestore.instance.collection('autos').where('usuario', isEqualTo: usuario).get();
+  Future<List<AutoModel>> buscarAutos({bool compartilhado = false}) async {
+    // buscar coleção de autos compartilhados no Firebase
+    // se compartilhado for false, busca apenas autos do usuário logado
+    QuerySnapshot autos;
+    if (compartilhado) {
+      autos = await FirebaseFirestore.instance.collection('autos').where('compartilhado', isEqualTo: true).get();
+    } else {
+      // obtém os dados do usuário logado... todo:
+      final usuario = 'usuario_id'; // temp
+      autos = await FirebaseFirestore.instance.collection('autos').where('usuario', isEqualTo: usuario).get();
+    }
 
     // mapeie cada auto encontrado para um modelo
     final autoModelList = autos.docs.map((auto) {
       if (auto.exists) {
-        // buscar as sugestoes do auto
-        final model = AutoModel.fromMap(auto.data());
+        final model = AutoModel.fromJson(auto.data());
         model.id = auto.id;
         return model;
       }
@@ -26,7 +31,7 @@ class AutoRepository {
       // monta uma lista de SugestaoModel
       final sugestaoModelList = sugestoes.docs.map((sugestao) {
         if (sugestao.exists) {
-          final model = SugestaoModel.fromMap(sugestao.data());
+          final model = SugestaoModel.fromJson(sugestao.data());
           model.id = sugestao.id;
           return model;
         }
@@ -40,8 +45,8 @@ class AutoRepository {
 
   Future<String> cadastrarAuto(AutoModel auto) async {
     // adiciona o novo auto e atualiza o id do auto
-    // as sugestões não serão cadastradas aqui e deverão ser realizadas individualmente
-    final doc = await FirebaseFirestore.instance.collection('autos').add(auto.toMap());
+    // as sugestões serão cadastradas individualmente pelo usuário posteriromente
+    final doc = await FirebaseFirestore.instance.collection('autos').add(auto.toJson());
     auto.id = doc.id;
 
     return doc.id;
@@ -56,14 +61,14 @@ class AutoRepository {
     await collection.doc(id).delete();
   }
 
-  Future<void> atualizarAuto({AutoModel auto}) async {
+  Future<void> atualizarAuto(AutoModel auto) async {
     // atualiza um documento completo (que já exista no Firebase)
     if (auto.id.isNotEmpty) {
-      await FirebaseFirestore.instance.collection('autos').doc(auto.id).set(auto.toMap());
+      await FirebaseFirestore.instance.collection('autos').doc(auto.id).set(auto.toJson());
     }
   }
 
-  Future<void> setCompartilhamento(String id, bool value) async {
+  Future<void> compartilharAuto(String id, bool value) async {
     // atualiza o campo compartilhado do auto
     if (id.isNotEmpty && value != null) {
       await FirebaseFirestore.instance.collection('autos').doc(id).update({'compartilhado': value});
@@ -72,7 +77,7 @@ class AutoRepository {
 
   Future<void> clonarAuto(AutoModel auto) async {
     // cria um novo objeto igual e cadastro no Firebase
-    var model = AutoModel.fromMap(auto.toMap());
+    var model = AutoModel.fromJson(auto.toJson());
     await cadastrarAuto(model);
     // clonar cada sugestão do auto
     Future.forEach(auto.sugestoes, (sugestao) async => await cadastrarSugestao(sugestao, model.id));
@@ -80,7 +85,7 @@ class AutoRepository {
 
   Future<String> cadastrarSugestao(SugestaoModel sugestao, String idAuto) async {
     // adiciona a nova sugestao e atualiza o id do objeto
-    final doc = await FirebaseFirestore.instance.collection('sugestoes').add(sugestao.toMap());
+    final doc = await FirebaseFirestore.instance.collection('sugestoes').add(sugestao.toJson());
     sugestao.id = doc.id;
     return doc.id;
   }
@@ -91,10 +96,10 @@ class AutoRepository {
     await collection.doc(id).delete();
   }
 
-  Future<void> atualizarSugestao({SugestaoModel sugestao}) async {
+  Future<void> atualizarSugestao(SugestaoModel sugestao) async {
     // atualiza um documento completo (que já exista no Firebase)
     if (sugestao.id.isNotEmpty) {
-      await FirebaseFirestore.instance.collection('sugestoes').doc(sugestao.id).set(sugestao.toMap());
+      await FirebaseFirestore.instance.collection('sugestoes').doc(sugestao.id).set(sugestao.toJson());
     }
   }
 }

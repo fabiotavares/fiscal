@@ -1,6 +1,10 @@
 import 'package:fiscal/app/modules/login/login_module.dart';
 import 'package:fiscal/app/modules/main_page/main_page.dart';
+import 'package:fiscal/app/repository/auto_repository.dart';
+import 'package:fiscal/app/repository/gravidade_repository.dart';
 import 'package:fiscal/app/repository/usuario_repository.dart';
+import 'package:fiscal/app/services/auto_service.dart';
+import 'package:fiscal/app/services/gravidade_service.dart';
 import 'package:fiscal/app/services/usuario_service.dart';
 import 'package:fiscal/app/shared/auth_store.dart';
 
@@ -18,6 +22,10 @@ class AppModule extends MainModule {
         Bind((i) => AuthStore()),
         Bind((i) => UsuarioRepository()),
         Bind((i) => UsuarioService(i.get())),
+        Bind((i) => AutoRepository()),
+        Bind((i) => AutoService(i.get())),
+        Bind((i) => GravidadeRepository()),
+        Bind((i) => GravidadeService(i.get())),
       ];
 
   @override

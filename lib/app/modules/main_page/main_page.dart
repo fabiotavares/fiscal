@@ -16,12 +16,9 @@ class _MainPageState extends State<MainPage> {
 
     // necessário estar numa StatefulWidget para esse método funcionar bem
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      // só roda depois que a página é construída
-
-      await Future.delayed(Duration(seconds: 2));
-
       final authStore = Modular.get<AuthStore>();
       final isLogged = await authStore.isLogged();
+
       if (isLogged) {
         // obtém dados do usuário logado
         authStore.loadUsuario();
@@ -41,7 +38,7 @@ class _MainPageState extends State<MainPage> {
     ThemeUtils.init(context);
 
     return Scaffold(
-      backgroundColor: ThemeUtils.primaryColor,
+      // backgroundColor: ThemeUtils.accentColor,
       body: Center(
         child: Image.asset(
           'lib/assets/images/logo.png',

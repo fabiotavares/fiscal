@@ -9,17 +9,15 @@ class SugestaoModel {
     this.corpo,
   });
 
-  factory SugestaoModel.fromMap(Map<String, dynamic> map) {
+  factory SugestaoModel.fromJson(Map<String, dynamic> map) {
     return SugestaoModel(
-      // id: map['id'],
-      titulo: map['titulo'],
-      corpo: map['corpo'],
+      titulo: map['titulo'] as String,
+      corpo: map['corpo'] as String,
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
-      // 'id': id,
       'titulo': titulo,
       'corpo': corpo,
     };

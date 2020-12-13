@@ -59,47 +59,43 @@ class AutoModel {
     this.compartilhado,
   });
 
-  factory AutoModel.fromMap(Map<String, dynamic> map) {
+  factory AutoModel.fromJson(Map<String, dynamic> map) {
     return AutoModel(
-      usuario: map['usuario'],
-      // id: map['id'],
-      titulo: map['titulo'],
-      subtitulo: map['subtitulo'],
-      codigo: map['codigo'],
-      artigo: map['artigo'],
-      amparo: map['amparo'],
-      medidaAdm: map['medida_adm'],
-      responsavel: map['responsavel'],
-      gravidade: map['gravidade'],
-      valorAgravado: map['valor_agravado'],
-      orientacoes: map['orientacoes'],
-      // sugestoes: map['sugestoes'],
-      ultimaEdicao: map['ultima_edicao'],
-      compartilhado: map['compartilado'],
+      usuario: map['usuario'] as String,
+      titulo: map['titulo'] as String,
+      subtitulo: map['subtitulo'] as String,
+      codigo: map['codigo'] as String,
+      artigo: map['artigo'] as String,
+      amparo: map['amparo'] as String,
+      medidaAdm: map['medida_adm'] as String,
+      responsavel: getResponsavelModel(map['responsavel']),
+      gravidade: GravidadeModel.fromId(map['gravidade']),
+      valorAgravado: double.tryParse(map['valor_agravado']) ?? 0.0,
+      orientacoes: map['orientacoes'] as String,
+      ultimaEdicao: DateTime.tryParse(map['ultima_edicao']),
+      compartilhado: map['compartilado'] as bool,
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'usuario': usuario,
-      // 'id': id,
       'titulo': titulo,
       'subtitulo': subtitulo,
       'codigo': codigo,
       'artigo': artigo,
       'amparo': amparo,
       'medida_adm': medidaAdm,
-      'responsavel': getResponsavel(),
-      'gravidade': gravidade.nivel,
+      'responsavel': getResponsavelLabel(),
+      'gravidade': gravidade.id,
       'valor_agravado': valorAgravado,
       'orientacoes': orientacoes,
-      // 'sugestoes': sugestoes.map((s) => s.toMap()).toList(),
-      'ultima_edicao': ultimaEdicao,
+      'ultima_edicao': ultimaEdicao?.toIso8601String(),
       'compartilhado': compartilhado,
     };
   }
 
-  String getResponsavel() {
+  String getResponsavelLabel() {
     switch (responsavel.index) {
       case 0:
         return 'Condutor';
@@ -118,6 +114,25 @@ class AutoModel {
         break;
       default:
         return null;
+    }
+  }
+
+  static ResponsavelInfracao getResponsavelModel(String value) {
+    switch (value) {
+      case 'Proprietário':
+        return ResponsavelInfracao.proprietario;
+        break;
+      case 'Transportador':
+        return ResponsavelInfracao.transportador;
+        break;
+      case 'Embarcador':
+        return ResponsavelInfracao.embarcador;
+        break;
+      case 'Embarcador/Transportador':
+        return ResponsavelInfracao.embarcador_transportador;
+        break;
+      default:
+        return ResponsavelInfracao.condutor;
     }
   }
 
