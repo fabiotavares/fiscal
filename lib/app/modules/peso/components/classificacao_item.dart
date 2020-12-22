@@ -24,7 +24,6 @@ class ClassificacaoItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // SizedBox(height: 5),
           Container(
             width: 60,
             padding: EdgeInsets.all(3),
@@ -49,18 +48,11 @@ class ClassificacaoItem extends StatelessWidget {
             veiculoModel.tipo,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
-          SizedBox(height: 8.0),
-          Divider(thickness: 1, height: 0.0),
+          Divider(thickness: 1, height: 12.0),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30),
-            // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Column(
-              children: [
-                Image.asset('lib/assets/images/eixos/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}a.png'),
-                SizedBox(height: 5),
-                Image.asset('lib/assets/images/eixos/${veiculoModel.id.replaceFirst('-', '').toLowerCase()}b.png'),
-              ],
-            ),
+            child: Image.asset('lib/assets/images/eixos/${veiculoModel.idTrim}'),
+            // child: veiculoModel.url != null ? Image.network(veiculoModel.url) : CircularProgressIndicator(),
           ),
           SizedBox(height: 5),
           Text(

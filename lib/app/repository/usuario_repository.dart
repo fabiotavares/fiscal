@@ -2,19 +2,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fiscal/app/models/usuario_model.dart';
 import 'package:fiscal/app/repository/facebook_repository.dart';
 import 'package:fiscal/app/repository/shared_prefs_repository.dart';
+import 'package:fiscal/app/shared/auth_store.dart';
+import 'package:fiscal/app/shared/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class UsuarioRepository {
-  Future<UsuarioModel> login(String email, {String senha, bool facebookLogin = false, String avatar = ''}) async {
+  Future<String> login(String email, {String senha, bool facebookLogin = false, String avatar = ''}) async {
     // fazendo login no Firebase
     final fireAuth = FirebaseAuth.instance;
-    UsuarioModel usuarioModel;
+    UserCredential res;
 
     if (!facebookLogin) {
       // login com email e senha no firebase
-      var res = await fireAuth.signInWithEmailAndPassword(email: email, password: senha);
-      // criando dados do usuário para salvar depois
-      usuarioModel = UsuarioModel(email: email, token: await res.user.getIdToken());
+      res = await fireAuth.signInWithEmailAndPassword(email: email, password: senha);
       //
     } else {
       // login através do facebook
@@ -22,18 +23,17 @@ class UsuarioRepository {
       if (facebookModel != null) {
         // fazer login no firebase
         final facebookCredencial = FacebookAuthProvider.credential(facebookModel.token);
-        var res = await fireAuth.signInWithCredential(facebookCredencial);
-        // criando dados do usuário para salvar depois (id será o mesmo do FireAuth)
-        usuarioModel = UsuarioModel(
-          email: facebookModel.email,
-          token: await res.user.getIdToken(),
-          avatar: facebookModel.picture,
-        );
-        //
+        res = await fireAuth.signInWithCredential(facebookCredencial);
+        // atualizar com a foto do facebook, caso já não exista outra deficida anteriormente
+        print('### Foto geral do usuário via facebook: >${res.user.photoURL}<');
+        // se for a foto genérica padrão do facebook, salve a do perfil no lugar
+        if (res.user.photoURL == DEFAULT_URL_USER_PHOTO) {
+          await res.user.updateProfile(photoURL: facebookModel.picture);
+          res.user.reload();
+        }
       }
     }
-
-    return usuarioModel;
+    return res.user.getIdToken();
   }
 
   Future<UsuarioModel> recuperaDadosUsuarioLogado() async {
@@ -42,37 +42,31 @@ class UsuarioRepository {
   }
 
   Future<void> logoutFireAuth() async {
+    print('### entrou em UsuarioRepository.logoutFireAuth');
     // desloga do Firebase se estiver ativo
     final fireAuth = FirebaseAuth.instance;
     fireAuth?.signOut();
   }
 
-  Future<UsuarioModel> cadastrarUsuarioFireAuth({@required String email, @required String senha}) async {
+  Future<String> cadastrarUsuarioFireAuth({@required String email, @required String senha}) async {
     var fireAuth = FirebaseAuth.instance;
     final res = await fireAuth.createUserWithEmailAndPassword(email: email, password: senha);
-    return UsuarioModel(
-      email: email,
-      token: await res.user.getIdToken(),
-    );
+    return res.user.getIdToken();
   }
 
-  // Future<void> cadastrarUsuarioBanco(UsuarioModel user) async {
-  //   // verifica antes se o usuário já existe no Firestore...
-  //   final consulta =
-  //       await FirebaseFirestore.instance.collection('usuarios').where('email', isEqualTo: user.email).get();
-  //   if (consulta.docs.isEmpty) {
-  //     // cadastrar novo usuário passando o mesmo id do FireAuth
-  //     await FirebaseFirestore.instance.collection('usuarios').doc(user.id).set(user.toJson());
-  //   }
-  // }
+  Future<void> atualizarProfile({String displayName, String photoURL}) async {
+    // atualiza apenas os dados de profile
+    var foto = photoURL;
+    if (foto.trim().isEmpty) {
+      // só pra marcar como sem foto (não encontrei mode de excluir)
+      foto = '@';
+    }
 
-  Future<void> atualizarUsuarioBanco(UsuarioModel usuario) async {
-    // atualiza usuario no banco de dados
-    // await FirebaseFirestore.instance.collection('usuarios').doc(usuario.id).set(usuario.toJson());
-    //todo:
+    final authStore = Modular.get<AuthStore>();
+    await authStore.fireUser.updateProfile(displayName: displayName, photoURL: foto);
   }
 
-  Future<void> salvaUsuarioLocal(UsuarioModel user) async {
+  Future<void> salvarUsuarioLocal(UsuarioModel user) async {
     // salva no dispositivo os dados do usuário
     final prefs = await SharedPrefsRepository.instance;
     await prefs.registerUserData(user);

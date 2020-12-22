@@ -24,25 +24,22 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     });
   }
 
-  final _$loadUsuarioAsyncAction = AsyncAction('_AuthStoreBase.loadUsuario');
+  final _$updateUsuarioLogadoAsyncAction =
+      AsyncAction('_AuthStoreBase.updateUsuarioLogado');
 
   @override
-  Future<void> loadUsuario() {
-    return _$loadUsuarioAsyncAction.run(() => super.loadUsuario());
+  Future<void> updateUsuarioLogado() {
+    return _$updateUsuarioLogadoAsyncAction
+        .run(() => super.updateUsuarioLogado());
   }
 
-  final _$testeAsyncAction = AsyncAction('_AuthStoreBase.teste');
+  final _$loadUsuarioDispositivoAsyncAction =
+      AsyncAction('_AuthStoreBase.loadUsuarioDispositivo');
 
   @override
-  Future<void> teste() {
-    return _$testeAsyncAction.run(() => super.teste());
-  }
-
-  final _$isLoggedAsyncAction = AsyncAction('_AuthStoreBase.isLogged');
-
-  @override
-  Future<bool> isLogged() {
-    return _$isLoggedAsyncAction.run(() => super.isLogged());
+  Future<void> loadUsuarioDispositivo() {
+    return _$loadUsuarioDispositivoAsyncAction
+        .run(() => super.loadUsuarioDispositivo());
   }
 
   final _$isProviderFacebookAsyncAction =
@@ -68,6 +65,20 @@ mixin _$AuthStore on _AuthStoreBase, Store {
   @override
   Future<void> logout() {
     return _$logoutAsyncAction.run(() => super.logout());
+  }
+
+  final _$_AuthStoreBaseActionController =
+      ActionController(name: '_AuthStoreBase');
+
+  @override
+  bool isLogged() {
+    final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
+        name: '_AuthStoreBase.isLogged');
+    try {
+      return super.isLogged();
+    } finally {
+      _$_AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

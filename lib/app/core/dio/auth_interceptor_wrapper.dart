@@ -2,7 +2,9 @@ import 'package:fiscal/app/core/dio/custom_dio.dart';
 import 'package:fiscal/app/repository/security_storage_repository.dart';
 import 'package:fiscal/app/repository/shared_prefs_repository.dart';
 import 'package:dio/dio.dart';
+import 'package:fiscal/app/shared/auth_store.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class AuthInterceptorWrapper extends InterceptorsWrapper {
   @override
@@ -59,7 +61,7 @@ class AuthInterceptorWrapper extends InterceptorsWrapper {
       await security.registerRefreshToken(refreshResult.data['refresh_token']);
     } catch (e) {
       print('Erro no _refreshToken: $e');
-      prefs.logout();
+      Modular.get<AuthStore>().logout();
     }
   }
 }

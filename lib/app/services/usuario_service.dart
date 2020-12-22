@@ -1,12 +1,13 @@
 import 'package:fiscal/app/core/exceptions/acesso_negado_dio_exceptions.dart';
 import 'package:fiscal/app/core/exceptions/acesso_negado_firebase_exceptions.dart';
-import 'package:fiscal/app/models/usuario_model.dart';
 import 'package:fiscal/app/repository/shared_prefs_repository.dart';
 import 'package:fiscal/app/repository/usuario_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fiscal/app/shared/auth_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class UsuarioService {
   final UsuarioRepository _repository;
@@ -19,18 +20,15 @@ class UsuarioService {
     String senha,
   }) async {
     try {
-      UsuarioModel user = await _repository.login(email, senha: senha, facebookLogin: facebookLogin);
-
-      if (user.token == null) {
+      // chama o login do repository
+      final token = await _repository.login(email, senha: senha, facebookLogin: facebookLogin);
+      // se o token resultante for nulo, o acesso é negado
+      if (token == null) {
         throw AcessoNegadoFirebaseException('Acesso Negado');
       }
-
-      // verifica necessidade de cadastrar no banco de dados (Firestore)
-      // await _repository.cadastrarUsuarioBanco(user);
-
       // salva dados do usuário logado localmente
-      final prefs = await SharedPrefsRepository.instance;
-      await prefs.registerUserData(user);
+      final authStore = Modular.get<AuthStore>();
+      authStore.updateUsuarioLogado();
       //
     } on PlatformException catch (e) {
       // erro específico do firebase
@@ -62,10 +60,14 @@ class UsuarioService {
   Future<void> cadastrarUsuario(String email, String senha) async {
     try {
       // cadastra usuário no fire auth
-      final user = await _repository.cadastrarUsuarioFireAuth(email: email, senha: senha);
-      // cadastrar usuário no firebase store e salva localmente
-      // await _repository.cadastrarUsuarioBanco(user);
-      await _repository.salvaUsuarioLocal(user);
+      final token = await _repository.cadastrarUsuarioFireAuth(email: email, senha: senha);
+      // se o token resultante for nulo, o acesso é negado
+      if (token == null) {
+        throw AcessoNegadoFirebaseException('Acesso Negado');
+      }
+      // salva dados do usuário logado localmente
+      final authStore = Modular.get<AuthStore>();
+      authStore.updateUsuarioLogado();
       //
     } catch (e) {
       print('Erro ao cadastrar usuário: $e');
@@ -73,20 +75,30 @@ class UsuarioService {
     }
   }
 
-  Future<void> salvaUsuarioLocal(UsuarioModel user) async {
-    await _repository.salvaUsuarioLocal(user);
-  }
-
-  Future<UsuarioModel> recuperaDadosUsuarioLogado() async {
-    final prefs = await SharedPrefsRepository.instance;
-    return prefs.userData;
+  Future<void> atualizarProfile({String displayName, String photoURL}) async {
+    try {
+      // atualiza dados de profile do usuário
+      await _repository.atualizarProfile(displayName: displayName, photoURL: photoURL);
+      // atualiza dados do usuário logado localmente
+      final authStore = Modular.get<AuthStore>();
+      authStore.updateUsuarioLogado();
+      //
+    } catch (e) {
+      print('Erro ao atualizar dados de profile do usuário: $e');
+      rethrow;
+    }
   }
 
   Future<void> logout() async {
     // desloga do FireAuth
-    await _repository.logoutFireAuth();
-    // limpa dados internos e volta para tela de login
-    final prefs = await SharedPrefsRepository.instance;
-    prefs.logout();
+    try {
+      await _repository.logoutFireAuth();
+      // limpa dados internos
+      final prefs = await SharedPrefsRepository.instance;
+      prefs.clearUserLocal();
+    } finally {
+      // redireciona para a home (mesme que ocorra uma excessão no processo)
+      Modular.to.pushNamedAndRemoveUntil('/', ModalRoute.withName('/'));
+    }
   }
 }

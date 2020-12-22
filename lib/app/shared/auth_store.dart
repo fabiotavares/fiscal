@@ -10,46 +10,75 @@ part 'auth_store.g.dart';
 class AuthStore = _AuthStoreBase with _$AuthStore;
 
 abstract class _AuthStoreBase with Store {
+  User fireUser;
+
   @observable
   UsuarioModel usuarioLogado;
 
-  @action
-  Future<void> loadUsuario() async {
-    usuarioLogado = await Modular.get<UsuarioService>().recuperaDadosUsuarioLogado();
-  }
-
-  @action
-  Future<void> teste() async {
-    usuarioLogado = UsuarioModel(email: 'teste@gmail.com', nome: 'Fábio Tavares');
-  }
-
-  @action
-  Future<bool> isLogged() async {
-    // final prefs = await SharedPrefsRepository.instance;
-    // final accessToken = prefs.accessToken;
-    // return accessToken != null;
-
-    // verifica se o usuário corrente está nulo
+  Future<void> initUser() async {
+    // inicializa o usuário remoto
     final fireAuth = FirebaseAuth.instance;
-    if (fireAuth.currentUser == null) {
-      return false;
+    fireUser = fireAuth.currentUser;
+    // inicializa o usuário model logado
+    await updateUsuarioLogado();
+    // ouvinte para quando o estado do usuário mudar
+    // todo: pensar no caso dele deslogar remotamente, ou mudar a senha do provider...
+    fireAuth.authStateChanges().listen((user) async {
+      print('### Entrou em authStateChanges');
+      fireUser = user;
+      // updateUsuarioLogado();
+    });
+  }
+
+  @action
+  Future<void> updateUsuarioLogado() async {
+    // faz reload se tiver acesso à internet
+    if (fireUser != null && await InternetUtils.conexaoDisponivel()) {
+      try {
+        await fireUser.reload();
+        fireUser = FirebaseAuth.instance.currentUser;
+        // salva token...
+        final prefs = await SharedPrefsRepository.instance;
+        prefs.registerAccessToken(await fireUser.getIdToken());
+      } catch (e) {}
     }
 
-    // atualiza token se internet disponível
-    if (await InternetUtils.conexaoDisponivel() && fireAuth.currentUser != null) {
-      final idToken = await fireAuth.currentUser.getIdToken();
+    // cria novo modelo com base no fireUser atual
+    if (fireUser != null) {
+      usuarioLogado = UsuarioModel(
+        email: fireUser.email,
+        nome: fireUser.displayName,
+        avatar: fireUser.photoURL,
+      );
+      print('### Foto no updateUsuarioLogado: >${fireUser.photoURL}<');
+
+      // registrar localmente
+      await registerUsuario();
+    }
+  }
+
+  @action
+  Future<void> loadUsuarioDispositivo() async {
+    final prefs = await SharedPrefsRepository.instance;
+    usuarioLogado = prefs.userData;
+  }
+
+  Future<void> registerUsuario() async {
+    if (usuarioLogado != null) {
       final prefs = await SharedPrefsRepository.instance;
-      prefs.registerAccessToken(idToken);
+      prefs.registerUserData(usuarioLogado);
     }
+  }
 
-    return true;
+  @action
+  bool isLogged() {
+    return fireUser != null;
   }
 
   @action
   Future<bool> isProviderFacebook() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      return user.providerData[0].providerId == 'facebook.com';
+    if (fireUser != null) {
+      return fireUser.providerData[0].providerId == 'facebook.com';
     }
     // retorna null se não tiver logado
     return null;
@@ -57,9 +86,8 @@ abstract class _AuthStoreBase with Store {
 
   @action
   Future<bool> isProviderPassword() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      return user.providerData[0].providerId == 'password';
+    if (fireUser != null) {
+      return fireUser.providerData[0].providerId == 'password';
     }
     // retorna null se não tiver logado
     return null;

@@ -1,6 +1,6 @@
-import 'package:fiscal/app/models/auto_model.dart';
 import 'package:fiscal/app/models/auto_peso_model.dart';
 import 'package:fiscal/app/models/fiscalizacao_peso_model.dart';
+import 'package:fiscal/app/models/infracao_model.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -45,7 +45,7 @@ abstract class _FiscalizacaoControllerBase with Store {
     // complemento condicional no amparo legal
     if (pbtcPermitido != f.pbtcLegal) {
       // usando o limite do fabricante
-      excessoPeso.amparo += ', Art. 100 CTB';
+      excessoPeso.infracao.amparo += ', Art. 100 CTB';
     }
 
     // Define o responsavel
@@ -61,7 +61,7 @@ abstract class _FiscalizacaoControllerBase with Store {
       }
     }
     // Atribuindo valores calculados
-    excessoPeso.responsavel = responsavel;
+    excessoPeso.infracao.responsavel = responsavel;
     excessoPeso.cnpjEmbarcador = cnpj;
 
     // cria a infração de excesso na cmt...
@@ -83,7 +83,7 @@ abstract class _FiscalizacaoControllerBase with Store {
     // complemento condicional no amparo legal
     if (f.pbtcTecnico > 0.0 && f.pbtcTecnico < f.pbtcLegal) {
       // atualiza o amparo legal...
-      excessoCmt.amparo += ', Art. 100 CTB';
+      excessoCmt.infracao.amparo += ', Art. 100 CTB';
     }
 
     // atualiza lista de autos para esta fiscalização de peso

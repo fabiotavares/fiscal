@@ -1421,6 +1421,9 @@ abstract class _ConfiguracoesControllerBase with Store {
       precisaAet: true,
     ));
 
+    // // obtém as urls de cada imagem da lista
+    // Future.forEach(configs, (ClassificacaoEixosModel element) async => await element.setUrl());
+
     if (filtroSelecionado == 'Todos') {
       return Future.value(configs);
     } else {

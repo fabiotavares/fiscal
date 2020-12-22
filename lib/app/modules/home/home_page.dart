@@ -1,6 +1,5 @@
 import 'package:fiscal/app/modules/home/components/home_appbar.dart';
 import 'package:fiscal/app/modules/home/components/home_drawer.dart';
-import 'package:fiscal/app/shared/auth_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -20,6 +19,8 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
   @override
   void initState() {
     super.initState();
+
+    controller.buscarGravidades();
 
     // // definindo um ouvinte para o estado de autenticação do usuário
     // FirebaseAuth.instance.authStateChanges().listen((user) async {
@@ -59,21 +60,21 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                 subtitle: Text('Roteiro de fiscalização'),
               ),
             ),
-            FlatButton(
-              onPressed: () async {
-                final user = Modular.get<AuthStore>().usuarioLogado;
-                print('Token usuário logado: ${user.token}');
-                final facebook = await Modular.get<AuthStore>().isProviderFacebook();
-                if (facebook != null) {
-                  if (facebook) {
-                    print('Usuário logado pelo facebook');
-                  } else {
-                    print('Usuário NÃO logado pelo facebook');
-                  }
-                }
-              },
-              child: Text('Teste...'),
-            ),
+            // FlatButton(
+            //   onPressed: () async {
+            //     final user = Modular.get<AuthStore>().fireUser;
+            //     print('uid usuário logado: ${user.uid}');
+            //     // final facebook = await Modular.get<AuthStore>().isProviderFacebook();
+            //     // if (facebook != null) {
+            //     //   if (facebook) {
+            //     //     print('Usuário logado pelo facebook');
+            //     //   } else {
+            //     //     print('Usuário NÃO logado pelo facebook');
+            //     //   }
+            //     // }
+            //   },
+            //   child: Text('Uid...'),
+            // ),
           ],
         ),
       ),

@@ -1,3 +1,5 @@
+import 'package:firebase_storage/firebase_storage.dart';
+
 class ClassificacaoEixosModel {
   final String id;
   final String tipo;
@@ -9,6 +11,7 @@ class ClassificacaoEixosModel {
   final double valorComprimento2;
   final bool precisaAet;
   final String obs;
+  String url;
 
   ClassificacaoEixosModel({
     this.id,
@@ -28,5 +31,13 @@ class ClassificacaoEixosModel {
       return 'PBT';
     }
     return 'PBTC';
+  }
+
+  String get idTrim {
+    return '${this.id.replaceFirst('-', '').toLowerCase()}.png';
+  }
+
+  Future<void> setUrl() async {
+    url = await FirebaseStorage.instance.ref('eixos/$idTrim').getDownloadURL();
   }
 }

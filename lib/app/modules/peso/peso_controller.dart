@@ -10,23 +10,23 @@ part 'peso_controller.g.dart';
 class PesoController = _PesoControllerBase with _$PesoController;
 
 abstract class _PesoControllerBase with Store {
-  TextEditingController limiteTecnicoController = TextEditingController();
-  TextEditingController taraController = TextEditingController();
-  TextEditingController cmtController = TextEditingController();
-  TextEditingController placasTracionadosController = TextEditingController();
-  TextEditingController tipoCargaController = TextEditingController();
-  TextEditingController cnpjRemetenteController = TextEditingController();
-  TextEditingController inmetroController = TextEditingController();
-  TextEditingController validadeAfericaoController = TextEditingController();
-  TextEditingController pesoDeclaradoController = TextEditingController();
-  TextEditingController pesoAferidoController = TextEditingController();
+  var limiteTecnicoController = TextEditingController();
+  var taraController = TextEditingController();
+  var cmtController = TextEditingController();
+  var placasTracionadosController = TextEditingController();
+  var tipoCargaController = TextEditingController();
+  var cnpjRemetenteController = TextEditingController();
+  var inmetroController = TextEditingController();
+  var validadeAfericaoController = TextEditingController();
+  var pesoDeclaradoController = TextEditingController();
+  var pesoAferidoController = TextEditingController();
 
   // atributos necessários para os componentes de somatório
-  TextFieldSomaController limiteTecnicoSomaController = TextFieldSomaController();
-  TextFieldSomaController taraSomaController = TextFieldSomaController();
-  TextFieldSomaController cmtSomaController = TextFieldSomaController();
-  TextFieldSomaController pesoDeclaradoSomaController = TextFieldSomaController();
-  TextFieldSomaController pesoAferidoSomaController = TextFieldSomaController();
+  var limiteTecnicoSomaController = TextFieldSomaController();
+  var taraSomaController = TextFieldSomaController();
+  var cmtSomaController = TextFieldSomaController();
+  var pesoDeclaradoSomaController = TextFieldSomaController();
+  var pesoAferidoSomaController = TextFieldSomaController();
 
   @observable
   ClassificacaoEixosModel veiculoModel;

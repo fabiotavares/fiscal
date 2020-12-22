@@ -3,8 +3,8 @@ import 'package:fiscal/app/models/gravidade_model.dart';
 
 class GravidadeRepository {
   Future<List<GravidadeModel>> buscarGravidades() async {
-    // buscar coleção gravidade no Firebase
-    final gravidades = await FirebaseFirestore.instance.collection('gravidade').get();
+    // buscar coleção gravidades no Firebase
+    final gravidades = await FirebaseFirestore.instance.collection('gravidades').get();
 
     // mapeie cada gravidade encontrada para um modelo
     return gravidades.docs.map((g) {

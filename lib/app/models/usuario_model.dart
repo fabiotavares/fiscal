@@ -2,13 +2,11 @@ class UsuarioModel {
   final String email;
   final String nome;
   final String avatar;
-  final String token;
 
   UsuarioModel({
     this.email,
     this.nome,
     this.avatar,
-    this.token,
   });
 
   factory UsuarioModel.fromJson(Map<String, dynamic> map) {
@@ -16,7 +14,6 @@ class UsuarioModel {
       email: map['email'] as String,
       nome: map['apelido'] as String,
       avatar: map['avatar'] as String,
-      token: map['token'] as String,
     );
   }
 
@@ -25,7 +22,6 @@ class UsuarioModel {
       'email': email,
       'apelido': nome,
       'avatar': avatar,
-      'token': token,
     };
   }
 
@@ -35,7 +31,6 @@ class UsuarioModel {
       'email': email,
       'apelido': nome,
       'avatar': avatar,
-      'token': token,
     };
   }
 }

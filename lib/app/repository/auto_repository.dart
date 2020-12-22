@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fiscal/app/models/auto_model.dart';
+import 'package:fiscal/app/models/infracao_model.dart';
 import 'package:fiscal/app/models/sugestao_model.dart';
+import 'package:fiscal/app/shared/auth_store.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class AutoRepository {
   Future<List<AutoModel>> buscarAutos({bool compartilhado = false}) async {
@@ -10,8 +13,8 @@ class AutoRepository {
     if (compartilhado) {
       autos = await FirebaseFirestore.instance.collection('autos').where('compartilhado', isEqualTo: true).get();
     } else {
-      // obtém os dados do usuário logado... todo:
-      final usuario = 'usuario_id'; // temp
+      // obtém os dados do usuário logado...
+      final usuario = Modular.get<AuthStore>().fireUser.uid;
       autos = await FirebaseFirestore.instance.collection('autos').where('usuario', isEqualTo: usuario).get();
     }
 
@@ -24,8 +27,14 @@ class AutoRepository {
       }
     }).toList();
 
-    // busque todas as sugestões para cada auto
-    await Future.forEach(autoModelList, (autoModel) async {
+    // busque os dados da infração e todas as sugestões de cada auto
+    await Future.forEach(autoModelList, (AutoModel autoModel) async {
+      // buscando os dados da infração do auto
+      final infracao = await FirebaseFirestore.instance.collection('infracoes').doc(autoModel.infracao.id).get();
+      if (infracao.exists) {
+        autoModel.infracao = InfracaoModel.fromJson(infracao.data());
+      }
+      // buscando as sugestões do auto
       final sugestoes =
           await FirebaseFirestore.instance.collection('sugestoes').where('auto', isEqualTo: autoModel.id).get();
       // monta uma lista de SugestaoModel

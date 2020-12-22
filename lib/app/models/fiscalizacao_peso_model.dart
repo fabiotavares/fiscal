@@ -1,4 +1,4 @@
-import 'package:fiscal/app/models/auto_model.dart';
+import 'package:fiscal/app/models/auto_peso_model.dart';
 
 class FiscalizacaoPesoModel {
   final String classificacao;

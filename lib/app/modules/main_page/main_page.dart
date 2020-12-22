@@ -16,16 +16,20 @@ class _MainPageState extends State<MainPage> {
 
     // necessário estar numa StatefulWidget para esse método funcionar bem
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      final authStore = Modular.get<AuthStore>();
-      final isLogged = await authStore.isLogged();
+      try {
+        // inicializa o usuário do FirebaseAuth e o modelo local
+        final authStore = Modular.get<AuthStore>();
+        await authStore.initUser();
 
-      if (isLogged) {
-        // obtém dados do usuário logado
-        authStore.loadUsuario();
-        // serve pra matar esta página e tudo que tinha antes
-        Modular.to.pushNamedAndRemoveUntil('/home', (_) => false);
-      } else {
-        // serve pra matar esta página e tudo que tinha antes
+        if (authStore.isLogged()) {
+          // serve pra matar esta página e tudo que tinha antes
+          Modular.to.pushNamedAndRemoveUntil('/home', (_) => false);
+        } else {
+          // serve pra matar esta página e tudo que tinha antes
+          Modular.to.pushNamedAndRemoveUntil('/login', (_) => false);
+        }
+      } catch (e) {
+        // se ocorrer algum erro vai pra tela de login
         Modular.to.pushNamedAndRemoveUntil('/login', (_) => false);
       }
     });

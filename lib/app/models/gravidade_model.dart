@@ -1,4 +1,5 @@
-import 'package:fiscal/app/shared/utils/constants.dart';
+import 'package:fiscal/app/services/gravidade_service.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class GravidadeModel {
   String id;
@@ -13,31 +14,13 @@ class GravidadeModel {
     this.valor,
   });
 
-  GravidadeModel.leve({this.valor = VALOR_INFRACAO_LEVE})
-      : id = 'leve',
-        nivel = 'Leve',
-        pontuacao = 3;
-
-  GravidadeModel.media({this.valor = VALOR_INFRACAO_MEDIA})
-      : id = 'media',
-        nivel = 'Média',
-        pontuacao = 4;
-
-  GravidadeModel.grave({this.valor = VALOR_INFRACAO_GRAVE})
-      : id = 'grave',
-        nivel = 'Grave',
-        pontuacao = 5;
-
-  GravidadeModel.gravissima({this.valor = VALOR_INFRACAO_GRAVISSIMA})
-      : id = 'gravissima',
-        nivel = 'Gravíssima',
-        pontuacao = 7;
-
   factory GravidadeModel.fromJson(Map<String, dynamic> map) {
     return GravidadeModel(
       nivel: map['nivel'] as String,
-      pontuacao: int.tryParse(map['pontuacao']) ?? 0,
-      valor: double.tryParse(map['valor']) ?? 0.0,
+      pontuacao: map['pontuacao'] ?? 0,
+      // pontuacao: int.tryParse(map['pontuacao']) ?? 0,
+      valor: map['valor'] ?? 0.0,
+      // valor: double.tryParse(map['valor']) ?? 0.0,
     );
   }
 
@@ -53,16 +36,16 @@ class GravidadeModel {
     //todo: pendente... providenciar uma forma alternativa
     switch (id) {
       case 'media':
-        return GravidadeModel.media();
+        return Modular.get<GravidadeService>().media;
         break;
       case 'grave':
-        return GravidadeModel.grave();
+        return Modular.get<GravidadeService>().grave;
         break;
       case 'gravissima':
-        return GravidadeModel.gravissima();
+        return Modular.get<GravidadeService>().gravissima;
         break;
       default:
-        return GravidadeModel.leve();
+        return Modular.get<GravidadeService>().leve;
     }
   }
 }

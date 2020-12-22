@@ -7,7 +7,7 @@ part of 'usuario_controller.dart';
 // **************************************************************************
 
 final $UsuarioController = BindInject(
-  (i) => UsuarioController(),
+  (i) => UsuarioController(i<UsuarioService>()),
   singleton: true,
   lazy: true,
 );
@@ -19,30 +19,38 @@ final $UsuarioController = BindInject(
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UsuarioController on _UsuarioControllerBase, Store {
-  final _$valueAtom = Atom(name: '_UsuarioControllerBase.value');
+  final _$urlValidaAtom = Atom(name: '_UsuarioControllerBase.urlValida');
 
   @override
-  int get value {
-    _$valueAtom.reportRead();
-    return super.value;
+  bool get urlValida {
+    _$urlValidaAtom.reportRead();
+    return super.urlValida;
   }
 
   @override
-  set value(int value) {
-    _$valueAtom.reportWrite(value, super.value, () {
-      super.value = value;
+  set urlValida(bool value) {
+    _$urlValidaAtom.reportWrite(value, super.urlValida, () {
+      super.urlValida = value;
     });
+  }
+
+  final _$atualizarProfileAsyncAction =
+      AsyncAction('_UsuarioControllerBase.atualizarProfile');
+
+  @override
+  Future<void> atualizarProfile() {
+    return _$atualizarProfileAsyncAction.run(() => super.atualizarProfile());
   }
 
   final _$_UsuarioControllerBaseActionController =
       ActionController(name: '_UsuarioControllerBase');
 
   @override
-  void increment() {
+  void setUrlValida(bool value) {
     final _$actionInfo = _$_UsuarioControllerBaseActionController.startAction(
-        name: '_UsuarioControllerBase.increment');
+        name: '_UsuarioControllerBase.setUrlValida');
     try {
-      return super.increment();
+      return super.setUrlValida(value);
     } finally {
       _$_UsuarioControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -51,7 +59,7 @@ mixin _$UsuarioController on _UsuarioControllerBase, Store {
   @override
   String toString() {
     return '''
-value: ${value}
+urlValida: ${urlValida}
     ''';
   }
 }

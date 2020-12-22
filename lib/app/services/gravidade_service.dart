@@ -1,38 +1,41 @@
 import 'package:fiscal/app/models/gravidade_model.dart';
 import 'package:fiscal/app/repository/gravidade_repository.dart';
-import 'package:fiscal/app/repository/shared_prefs_repository.dart';
 
 class GravidadeService {
   final GravidadeRepository _repository;
+  List<GravidadeModel> gravidades;
 
   GravidadeService(this._repository);
 
-  Future<List<GravidadeModel>> _buscarGravidadesOnline() {
-    return _repository.buscarGravidades();
-  }
-
   Future<List<GravidadeModel>> buscarGravidades() async {
-    // verifica primeiro se a lista de gravidades está disponível offline
-    final prefs = await SharedPrefsRepository.instance;
-    var res = prefs.gravidades;
-    if (res != null) {
-      return res;
-    }
-
-    // caso contrário, busque online e armazene localmente
-    res = await _buscarGravidadesOnline();
-    if (res != null) {
-      prefs.registerGravidades(res);
-    }
-    return res;
+    gravidades = await _repository.buscarGravidades();
   }
 
-  Future<void> updateGravidades() async {
-    // força nova busca online e armazenamento local
-    final prefs = await SharedPrefsRepository.instance;
-    final res = await _repository.buscarGravidades();
-    if (res != null) {
-      prefs.registerGravidades(res);
+  GravidadeModel get leve {
+    if (gravidades != null) {
+      return gravidades.firstWhere((gravidade) => gravidade.id == 'leve');
     }
+    return null;
+  }
+
+  GravidadeModel get media {
+    if (gravidades != null) {
+      return gravidades.firstWhere((gravidade) => gravidade.id == 'media');
+    }
+    return null;
+  }
+
+  GravidadeModel get grave {
+    if (gravidades != null) {
+      return gravidades.firstWhere((gravidade) => gravidade.id == 'grave');
+    }
+    return null;
+  }
+
+  GravidadeModel get gravissima {
+    if (gravidades != null) {
+      return gravidades.firstWhere((gravidade) => gravidade.id == 'gravissima');
+    }
+    return null;
   }
 }

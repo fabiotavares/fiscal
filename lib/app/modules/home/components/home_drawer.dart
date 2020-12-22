@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fiscal/app/shared/auth_store.dart';
 import 'package:fiscal/app/shared/theme_utils.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final authStore = Modular.get<AuthStore>();
     return Drawer(
       child: Container(
         child: Observer(
@@ -19,22 +21,31 @@ class HomeDrawer extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: ThemeUtils.accentColor,
                   ),
-                  accountName: Modular.get<AuthStore>().usuarioLogado?.nome != null
-                      ? Text(Modular.get<AuthStore>().usuarioLogado.nome)
-                      : Text('Inspetor'),
-                  accountEmail: Modular.get<AuthStore>().usuarioLogado?.email != null
-                      ? Text(Modular.get<AuthStore>().usuarioLogado.email)
-                      : Text('Email'),
+                  accountName:
+                      authStore.usuarioLogado?.nome != null ? Text(authStore.usuarioLogado.nome) : Text('Inspetor'),
+                  accountEmail:
+                      authStore.usuarioLogado?.email != null ? Text(authStore.usuarioLogado.email) : Text('Email'),
                   currentAccountPicture: CircleAvatar(
                     backgroundColor: Colors.transparent,
-                    backgroundImage: Modular.get<AuthStore>().usuarioLogado?.avatar != null
-                        ? NetworkImage(Modular.get<AuthStore>().usuarioLogado.avatar)
-                        : AssetImage('lib/assets/images/logo.png'),
+                    backgroundImage: authStore.usuarioLogado?.avatar != null
+                        ? (authStore.usuarioLogado.avatar == '@'
+                            ? AssetImage('lib/assets/images/user.jpg')
+                            // : NetworkImage(authStore.usuarioLogado.avatar))
+                            : CachedNetworkImageProvider(authStore.usuarioLogado.avatar))
+                        : AssetImage('lib/assets/images/user.jpg'),
+                    onBackgroundImageError: (exception, stackTrace) {},
                   ),
                 ),
-                ListTile(
-                  leading: Icon(Icons.account_circle),
-                  title: Text('Cadastro'),
+                InkWell(
+                  child: ListTile(
+                    leading: Icon(Icons.account_circle),
+                    title: Text('Cadastro'),
+                  ),
+                  onTap: () async {
+                    if (authStore.usuarioLogado != null) {
+                      Modular.to.pushNamed('/home/usuario');
+                    }
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.message),
@@ -54,7 +65,7 @@ class HomeDrawer extends StatelessWidget {
                     leading: Icon(Icons.logout),
                     title: Text('Sair'),
                   ),
-                  onTap: () async => await Modular.get<AuthStore>().logout(),
+                  onTap: () async => await authStore.logout(),
                 ),
               ],
             );

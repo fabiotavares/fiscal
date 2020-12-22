@@ -1,5 +1,5 @@
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
-import 'package:fiscal/app/models/auto_model.dart';
+import 'package:fiscal/app/models/auto_peso_model.dart';
 import 'package:fiscal/app/modules/peso/components/classificacao_item.dart';
 import 'package:fiscal/app/models/classificacao_eixos_model.dart';
 import 'package:fiscal/app/models/fiscalizacao_peso_model.dart';
@@ -24,7 +24,6 @@ class PesoPage extends StatefulWidget {
 
 class _PesoPageState extends ModularState<PesoPage, PesoController> {
   //use 'controller' variable to access controller
-  // final espacamento = 16.0;
 
   @override
   Widget build(BuildContext context) {

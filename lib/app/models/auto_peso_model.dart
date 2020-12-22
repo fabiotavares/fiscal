@@ -1,10 +1,22 @@
 import 'package:fiscal/app/models/auto_model.dart';
+import 'package:fiscal/app/models/infracao_model.dart';
 import 'package:fiscal/app/shared/components/text_with_copy_button.dart';
 import 'package:fiscal/app/shared/utils/constants.dart';
 import 'package:fiscal/app/shared/utils/numbers.dart';
 import 'package:fiscal/app/models/gravidade_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+enum TipoFiscalizacaoPeso {
+  balanca,
+  nota_fiscal,
+}
+
+enum OpcaoNotaFiscal {
+  nao_possui,
+  varios_remetentes,
+  unico_remetente,
+}
 
 class AutoPesoModel extends AutoModel {
   final bool isCmt;
@@ -37,31 +49,33 @@ class AutoPesoModel extends AutoModel {
     this.placasTracionados,
   }) {
     // configure argumentos da super conforme o caso (cmt ou pbtc)
-    super.medidaAdm = 'Retenção do veículo e transbordo de carga excedente';
+    super.infracao = InfracaoModel();
+    super.infracao.medidaAdm = 'Retenção do veículo e transbordo de carga excedente';
     if (isCmt) {
       // é infração de excesso na cmt
-      super.artigo = 'Art. 231 X';
-      super.amparo = 'Res 210/211, 290, 803 CONTRAN';
-      super.responsavel = ResponsavelInfracao.proprietario;
+      super.infracao.artigo = 'Art. 231 X';
+      super.infracao.amparo = 'Res 210/211, 290, 803 CONTRAN';
+      super.infracao.responsavel = ResponsavelInfracao.proprietario;
 
       // sobre gravidade
       if (_excessoVerificado > 1000.0) {
-        super.gravidade = GravidadeModel.gravissima();
-        super.valorAgravado = (_excessoVerificado / 500.0).ceil() * VALOR_INFRACAO_GRAVISSIMA;
-        super.codigo = '689-40';
+        super.infracao.gravidade = GravidadeModel.fromId('gravissima');
+        final valor = super.infracao.gravidade.valor;
+        super.infracao.valorAgravado = (_excessoVerificado / 500.0).ceil() * valor;
+        super.infracao.codigo = '689-40';
       } else if (_excessoVerificado > 600.0) {
-        super.gravidade = GravidadeModel.grave();
-        super.codigo = '689-00';
+        super.infracao.gravidade = GravidadeModel.fromId('grave');
+        super.infracao.codigo = '689-00';
       } else if (_excessoVerificado > 0.0) {
-        super.gravidade = GravidadeModel.media();
-        super.codigo = '688-20';
+        super.infracao.gravidade = GravidadeModel.fromId('media');
+        super.infracao.codigo = '688-20';
       }
       //
     } else {
       // é infração de excesso no pbtc
-      super.codigo = '683-11';
-      super.artigo = 'Art. 231 V';
-      super.amparo = 'Res 210, 290, 803 CONTRAN';
+      super.infracao.codigo = '683-11';
+      super.infracao.artigo = 'Art. 231 V';
+      super.infracao.amparo = 'Res 210, 290, 803 CONTRAN';
 
       // sobre gravidade
       double fator;
@@ -79,10 +93,9 @@ class AutoPesoModel extends AutoModel {
         fator = 5.32;
       }
       // valor será a multa média acrescida do peso determinado a cada fração de 200 kg
-      super.gravidade = GravidadeModel.media(
-        valor: VALOR_INFRACAO_MEDIA + (_excessoVerificado / 200.0).ceil() * fator,
-      );
-      //
+      super.infracao.gravidade = GravidadeModel.fromId('media');
+      final valor = super.infracao.gravidade.valor;
+      super.infracao.valorAgravado = valor + (_excessoVerificado / 200.0).ceil() * fator;
     }
   }
 
@@ -114,8 +127,8 @@ class AutoPesoModel extends AutoModel {
   Widget getAutoWidget() {
     // retorna uma representação gráfica da infração pra ser exibida na tela
     return Container(
-      padding: EdgeInsets.only(top: 12.0),
-      margin: isCmt ? EdgeInsets.only(bottom: 12.0) : null,
+      padding: EdgeInsets.only(top: 8.0),
+      margin: isCmt ? EdgeInsets.only(bottom: 8.0) : null,
       width: ScreenUtil().screenWidth,
       child: Card(
         elevation: 1,
@@ -186,19 +199,19 @@ class AutoPesoModel extends AutoModel {
     // caso de não haver excesso...
     if (_excessoVerificado <= 0.0) {
       if (isCmt) {
-        return Text('- Fiscalização por: ${_tipoFiscalizacao.toLowerCase()};\n' +
+        return Text('- Fiscalização por ${_tipoFiscalizacao.toLowerCase()};\n' +
             '- CMT: ${Numbers.getPesoFormatado(pesoPermitido)};\n' +
             '- $pbtcLabel constatado: ${Numbers.getPesoFormatado(pesoConstatado)};\n' +
             '- Excesso verificado: ${Numbers.getPesoFormatado(_excessoVerificado)};\n' +
-            '- ${super.amparo}.');
+            '- ${super.infracao.amparo}.');
       } else {
-        return Text('- Fiscalização por: ${_tipoFiscalizacao.toLowerCase()};\n' +
+        return Text('- Fiscalização por ${_tipoFiscalizacao.toLowerCase()};\n' +
             '- $pbtcLabel permitido: ${Numbers.getPesoFormatado(this.pesoPermitido)};\n' +
             '- $obsTolerancia: ${Numbers.getPesoFormatado(_tolerancia)};\n' +
             '- Total permitido: ${Numbers.getPesoFormatado(this.pesoPermitido + this._tolerancia)};\n' +
             '- $pbtcLabel constatado: ${Numbers.getPesoFormatado(this.pesoConstatado)};\n' +
             '- Excesso verificado: ${Numbers.getPesoFormatado(_excessoVerificado)};\n' +
-            '- ${super.amparo}.');
+            '- ${super.infracao.amparo}.');
       }
     }
 
@@ -212,14 +225,14 @@ class AutoPesoModel extends AutoModel {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextWithCopyButton(
-          title: 'Código: $codigo',
-          toCopy: '$codigo',
+          title: 'Código: ${infracao.codigo}',
+          toCopy: '${infracao.codigo}',
           backgoundColor: Colors.grey[200],
           margin: EdgeInsets.symmetric(vertical: 2),
           padding: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 8.0, left: 9.0),
         ),
-        Text('- CTB: $artigo'),
-        Text('- Fiscalização por: ${this._tipoFiscalizacao.toLowerCase()}'),
+        Text('- CTB: ${infracao.artigo}'),
+        Text('- Fiscalização por ${this._tipoFiscalizacao.toLowerCase()}'),
         if (!isCmt) Text('- $pbtcLabel permitido: ${Numbers.getPesoFormatado(this.pesoPermitido)}'),
         if (!isCmt) Text('- $obsTolerancia: ${Numbers.getPesoFormatado(this._tolerancia)}'),
         TextWithCopyButton(
@@ -237,13 +250,13 @@ class AutoPesoModel extends AutoModel {
           padding: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 8.0, left: 9.0),
         ),
         Text('- Excesso verificado: ${Numbers.getPesoFormatado(_excessoVerificado)}'),
-        Text('- Gravidade: ${super.gravidade.nivel}'),
-        Text('- Pontos perdidos: ${super.gravidade.pontuacao}'),
-        Text('- Valor: ${super.valorFormatado}'),
-        Text('- Responsável: ${super.getResponsavelLabel()}'),
+        Text('- Gravidade: ${super.infracao.gravidade.nivel}'),
+        Text('- Pontos perdidos: ${super.infracao.gravidade.pontuacao}'),
+        Text('- Valor: ${super.infracao.valorFormatado}'),
+        Text('- Responsável: ${super.infracao.getResponsavelLabel()}'),
         if (obsEmbarcador.isNotEmpty) Text('$obsEmbarcador'),
-        Text('- ${super.amparo}'),
-        Text('- Medida administrativa: ${super.medidaAdm}'),
+        Text('- ${super.infracao.amparo}'),
+        Text('- Medida administrativa: ${super.infracao.medidaAdm}'),
       ],
     );
   }
@@ -315,7 +328,7 @@ class AutoPesoModel extends AutoModel {
         '$obsCarga' +
         '$obsEmbarcador' +
         '$obsPlacas' +
-        '- $amparo;\n' +
+        '- ${infracao.amparo};\n' +
         '- Retido para transbordo.';
   }
 }
